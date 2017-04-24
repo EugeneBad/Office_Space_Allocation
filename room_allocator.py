@@ -72,6 +72,10 @@ class InteractiveRoomAllocator(cmd.Cmd):
         random_office_index = random.randrange(len(office_list)-1)
         random_office = office_list[random_office_index]
 
+        living_space_list = [living_space for living_space in andela_dojo['living_spaces'].values()]
+        random_living_space_index = random.randrange(len(living_space_list)-1)
+        random_living_space = office_list[random_living_space_index]
+
         pass
 
 
