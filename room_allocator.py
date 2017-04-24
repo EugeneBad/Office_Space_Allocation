@@ -41,6 +41,7 @@ def docopt_cmd(func):
     fn.__dict__.update(func.__dict__)
     return fn
 
+andela_dojo = Dojo()
 
 class InteractiveRoomAllocator(cmd.Cmd):
     intro = "Eugene's random room allocator for Andela"
@@ -49,7 +50,16 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
     @docopt_cmd
     def do_create_room(self, arg):
-        pass
+        """Usage: create_room <room_type> <room_name>"""
+
+        if arg['<room_type>'] == 'office':
+            pass
+
+        if arg['<room_type>'] == 'living':
+            pass
+
+
+
 
 opt = docopt(__doc__, sys.argv[1:])
 InteractiveRoomAllocator().cmdloop()
