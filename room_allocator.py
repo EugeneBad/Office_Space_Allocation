@@ -59,6 +59,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
             andela_dojo[arg['<room_name>']] = Room('living', arg['<room_name>'])
 
 
+    @docopt_cmd
+    def do_add_person(self, arg):
+        pass
 
 opt = docopt(__doc__, sys.argv[1:])
 InteractiveRoomAllocator().cmdloop()
