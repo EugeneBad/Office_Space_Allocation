@@ -47,7 +47,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
     prompt = "Room_Allocator: "
     file = None
 
-
+    @docopt_cmd
+    def do_create_room(self, arg):
+        pass
 
 opt = docopt(__doc__, sys.argv[1:])
 InteractiveRoomAllocator().cmdloop()
