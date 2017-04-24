@@ -53,11 +53,10 @@ class InteractiveRoomAllocator(cmd.Cmd):
         """Usage: create_room <room_type> <room_name>"""
 
         if arg['<room_type>'] == 'office':
-            pass
+            andela_dojo[arg['<room_name>']] = Office(arg['<room_name>'])
 
         if arg['<room_type>'] == 'living':
-            pass
-
+            andela_dojo[arg['<room_name>']] = Room('living', arg['<room_name>'])
 
 
 
