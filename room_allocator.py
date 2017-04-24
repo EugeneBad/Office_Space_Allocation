@@ -9,6 +9,7 @@ Usage:
 import cmd
 from docopt import docopt, DocoptExit
 import sys
+from DOJO.dojo import Dojo
 
 
 def docopt_cmd(func):
@@ -43,6 +44,7 @@ def docopt_cmd(func):
 
 
 andela_dojo = Dojo()  # Create the Dojo object.
+
 
 class InteractiveRoomAllocator(cmd.Cmd):
     intro = "Eugene's random room allocator for Andela"
