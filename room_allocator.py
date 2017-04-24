@@ -1,8 +1,8 @@
 """
 
 Usage:
-    room_allocator
-    room_allocator (-h | --help | --version)
+    Room_Allocator:
+    Room_Allocator: (-h | --help | --version)
 
 """
 
@@ -43,11 +43,9 @@ def docopt_cmd(func):
 
 
 class InteractiveRoomAllocator(cmd.Cmd):
-    pass
-
-
-
-
+    intro = "Eugene's random room allocator for Andela"
+    prompt = "Room_Allocator: "
+    file = None
 
 
 
