@@ -58,10 +58,14 @@ class InteractiveRoomAllocator(cmd.Cmd):
         if arg['<room_type>'] == 'living':
             andela_dojo[arg['<room_name>']] = Room('living', arg['<room_name>'])
 
-
     @docopt_cmd
     def do_add_person(self, arg):
+        """Usage:
+        add_person <person_name> <FELLOW|STAFF> [wants_accommodation=Y/N]
+        Options:
+        wants_accommodation=Y/N  Yes(Y) if Fellow opts for accommodation, No(N) otherwise. [default: N]"""
         pass
+
 
 opt = docopt(__doc__, sys.argv[1:])
 InteractiveRoomAllocator().cmdloop()
