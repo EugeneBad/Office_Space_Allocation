@@ -64,6 +64,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
         add_person <person_name> <FELLOW|STAFF> [wants_accommodation=Y/N]
         Options:
         wants_accommodation=Y/N  Yes(Y) if Fellow opts for accommodation, No(N) otherwise. [default: N]"""
+
+        if arg['<FELLOW|STAFF>'] == 'Staff' and arg['wants_accommodation'] == 'Y':
+            print('Staff cannot be allocated living spaces')
+
+
         pass
 
 
