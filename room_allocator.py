@@ -44,7 +44,6 @@ def docopt_cmd(func):
 
 andela_dojo = Dojo()  # Create the Dojo object.
 
-
 class InteractiveRoomAllocator(cmd.Cmd):
     intro = "Eugene's random room allocator for Andela"
     prompt = "Room_Allocator: "
