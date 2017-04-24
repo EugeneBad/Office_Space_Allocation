@@ -54,9 +54,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         if arg['<room_type>'] == 'office':
             andela_dojo['office_spaces'][arg['<room_name>']] = Office(arg['<room_name>'])
+            print('An office called {} has been successfully created!'.format(arg['<room_name>']))
 
         if arg['<room_type>'] == 'living':
             andela_dojo['living_spaces'][arg['<room_name>']] = Room('living', arg['<room_name>'])
+            print('An living space called {} has been successfully created!'.format(arg['<room_name>']))
 
     @docopt_cmd
     def do_add_person(self, arg):
@@ -75,6 +77,14 @@ class InteractiveRoomAllocator(cmd.Cmd):
         living_space_list = [living_space for living_space in andela_dojo['living_spaces'].values()]
         random_living_space_index = random.randrange(len(living_space_list)-1)
         random_living_space = office_list[random_living_space_index]
+
+        if arg['<FELLOW|STAFF>'] == 'Staff' and arg['wants_accommodation'] != 'Y':
+            random_office.occupants['Staff'][arg['<person_name>']] = Person(arg['<person_name>'], 'Staff')
+
+
+
+
+
 
         pass
 
