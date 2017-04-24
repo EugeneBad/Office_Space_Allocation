@@ -81,8 +81,17 @@ class InteractiveRoomAllocator(cmd.Cmd):
         if arg['<FELLOW|STAFF>'] == 'Staff' and arg['wants_accommodation'] != 'Y':
             random_office.occupants['Staff'][arg['<person_name>']] = Person(arg['<person_name>'], 'Staff')
 
+            print('Staff {} has been added successfully!'.format(arg['<person_name>']))
+            print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
 
+        if arg['<FELLOW|STAFF>'] == 'Fellow' and arg['wants_accommodation'] == 'Y':
 
+            random_office.occupants['Fellow'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Staff', 'Y')
+            random_living_space.occupants[arg['<person_name>']] = Fellow(arg['<person_name>'], 'Staff', 'Y')
+
+            print('Fellow {} has been added successfully!'.format(arg['<person_name>']))
+            print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
+            print('{} has been given living space: {}'.format(arg['<person_name>'], random_living_space.name))
 
 
 
