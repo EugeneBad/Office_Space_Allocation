@@ -8,5 +8,5 @@ class Room:
             self.maximum_occupants = 4
 
         if self.type == 'office':
-            self.occupants = {'staff': {}, 'fellow': {}}
+            self.occupants = {'Staff': {}, 'Fellows': {}}
             self.maximum_occupants = 6
