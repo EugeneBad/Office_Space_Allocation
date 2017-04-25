@@ -38,8 +38,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
         if arg['<room_type>'] == 'office':
 
             #  Add it as a value to the office_spaces dictionary in andela_dojo.
-
-            self.andela_dojo['office_spaces'][each_office] = Office(each_office)
+            for each_office in arg['<room_name>']:
+                self.andela_dojo['office_spaces'][each_office] = Office(each_office)
 
             print('An office called {} has been successfully created!'.format(arg['<room_name>']))
 
