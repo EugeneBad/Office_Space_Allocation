@@ -1,0 +1,12 @@
+class Room:
+    def __init__(self, type, name):
+        self.type = type
+        self.name = name
+
+        if self.type == 'living':
+            self.occupants = {}
+            self.maximum_occupants = 4
+
+        if self.type == 'office':
+            self.occupants = {'staff': {}, 'fellow': {}}
+            self.maximum_occupants = 6
