@@ -31,8 +31,8 @@ class CreateRoomTest(unittest.TestCase):
     def test_create_room_creates_Room(self):
         arg = {'<room_type>': 'office', '<room_name>': 'Yellow'}
 
-        command_without_decorator = self.interactive_session.do_create_room.__wrapped__
-        command_without_decorator(self.interactive_session, arg)
+        # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg)
 
         self.assertTrue(isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>']], Room),
                         msg='create_room command must create a Room')
@@ -41,8 +41,8 @@ class CreateRoomTest(unittest.TestCase):
     def test_create_room_creates_Office(self):
         arg = {'<room_type>': 'office', '<room_name>': 'Yellow'}
 
-        command_without_decorator = self.interactive_session.do_create_room.__wrapped__
-        command_without_decorator(self.interactive_session, arg)
+        # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg)
 
         self.assertTrue(isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>']], Office),
                         msg='create_room command must create an Office for type equal to "office"')
@@ -51,8 +51,8 @@ class CreateRoomTest(unittest.TestCase):
     def test_create_room_creates_LivingSpace(self):
         arg = {'<room_type>': 'living', '<room_name>': 'Purple'}
 
-        command_without_decorator = self.interactive_session.do_create_room.__wrapped__
-        command_without_decorator(self.interactive_session, arg)
+        # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg)
 
         self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>']], LivingSpace),
                         msg='create_room command must create a LivingSpace for type equal to "living"')

@@ -12,7 +12,7 @@ from DOJO.dojo import Dojo
 from FELLOW.fellow import Fellow
 from LIVINGSPACE.livingspace import LivingSpace
 from OFFICE.office import Office
-from PERSON.person import Person
+from STAFF.staff import Staff
 
 from docopt_decorator import docopt_cmd
 import random
@@ -74,7 +74,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         # If staff entry is valid, add person to Staff dictionary in the occupants attribute of the random_office
         if arg['<Fellow_or_Staff>'] == 'Staff' and arg['<wants_accommodation>'] != 'Y':
-            random_office.occupants['Staff'][arg['<person_name>']] = Person(arg['<person_name>'], 'Staff')
+            random_office.occupants['Staff'][arg['<person_name>']] = Staff(arg['<person_name>'])
 
             print('Staff {} has been added successfully!'.format(arg['<person_name>']))
             print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
