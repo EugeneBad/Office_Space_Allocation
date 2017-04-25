@@ -13,6 +13,7 @@ from FELLOW.fellow import Fellow
 from LIVINGSPACE.livingspace import LivingSpace
 from OFFICE.office import Office
 from PERSON.person import Person
+from functools import wraps
 
 import random
 
@@ -22,6 +23,7 @@ def docopt_cmd(func):
     This decorator is used to simplify the try/except block and pass the result
     of the docopt parsing to the called action.
     """
+    @wraps(func)
     def fn(self, arg):
         try:
             opt = docopt(fn.__doc__, arg)
@@ -47,8 +49,6 @@ def docopt_cmd(func):
     fn.__dict__.update(func.__dict__)
 
     return fn
-
-
 
 
 
