@@ -32,13 +32,14 @@ class InteractiveRoomAllocator(cmd.Cmd):
     # Function to implement the CLI command create_room.
     @docopt_cmd
     def do_create_room(self, arg):
-        """Usage: create_room <room_type> <room_name>"""
+        """Usage: create_room <room_type> <room_name>..."""
 
         #  Check if room is an office.
         if arg['<room_type>'] == 'office':
 
             #  Add it as a value to the office_spaces dictionary in andela_dojo.
-            self.andela_dojo['office_spaces'][arg['<room_name>']] = Office(arg['<room_name>'])
+
+            self.andela_dojo['office_spaces'][each_office] = Office(each_office)
 
             print('An office called {} has been successfully created!'.format(arg['<room_name>']))
 
