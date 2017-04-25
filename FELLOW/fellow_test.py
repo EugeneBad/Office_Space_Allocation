@@ -2,6 +2,7 @@ import unittest
 from PERSON.person import Person
 from FELLOW.fellow import Fellow
 
+
 class FellowTest(unittest.TestCase):
 
     def setUp(self):
@@ -20,5 +21,5 @@ class FellowTest(unittest.TestCase):
         self.assertEqual(self.out_fellow.name, 'Aretha', msg='Fellow name is wrong')
 
     def test_Fellow_accommodation(self):
-        self.assertEqual(self.in_fellow.accomodation, 'Y', msg="Fellow's accommodation status is wrong")
-        self.assertEqual(self.out_fellow.accomodation, 'N', msg="Fellow's accommodation status is wrong")
+        self.assertEqual(self.in_fellow.accommodation, 'Y', msg="Fellow's accommodation status is wrong")
+        self.assertEqual(self.out_fellow.accommodation, 'N', msg="Fellow's accommodation status is wrong")
