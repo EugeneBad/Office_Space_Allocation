@@ -64,44 +64,74 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         # Randomly select an office from the office_spaces dictionary in andela_dojo,
         # store it in random_office variable
-        office_list = [office for office in self.andela_dojo['office_spaces'].values()]
-        random_office_index = random.randint(0, len(office_list)-1)
-        random_office = office_list[random_office_index]
+        office_list = [office for office in self.andela_dojo['office_spaces'].values() if len(office.occupants) < 7]
+
+        if len(office_list) > 0:
+            random_office_index = random.randint(0, len(office_list)-1)
+            random_office = office_list[random_office_index]
+
+        if len(office_list) == 0:
+            random_office = None
 
         # Randomly select a living space from the living_spaces dictionary in andela_dojo,
         # store it in random_living_space variable
-        living_space_list = [living_space for living_space in self.andela_dojo['living_spaces'].values()]
-        random_living_space_index = random.randint(0, len(living_space_list)-1)
-        random_living_space = living_space_list[random_living_space_index]
+        living_space_list = [living_space for living_space in self.andela_dojo['living_spaces'].values() if len(living_space.occupants) < 5]
+
+        if len(living_space_list) > 0:
+            random_living_space_index = random.randint(0, len(living_space_list)-1)
+            random_living_space = living_space_list[random_living_space_index]
+
+        if len(living_space_list) == 0:
+            random_living_space = None
 
         # If staff entry is valid, add person to Staff dictionary in the occupants attribute of the random_office
         if arg['<Fellow_or_Staff>'] == 'Staff' and arg['<wants_accommodation>'] != 'Y':
-            random_office.occupants['Staff'][arg['<person_name>']] = Staff(arg['<person_name>'])
 
-            print('Staff {} has been added successfully!'.format(arg['<person_name>']))
-            print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
+            if random_office is not None:
+                random_office.occupants['Staff'][arg['<person_name>']] = Staff(arg['<person_name>'])
+
+                print('Staff {} has been added successfully!'.format(arg['<person_name>']))
+                print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
+
+            if random_office is None:
+                self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Staff(arg['<person_name>'])
+                print('Staff {} has unallocated Office Space'.format(arg['<person_name>']))
 
         # If fellow wants accommodation:
         if arg['<Fellow_or_Staff>'] == 'Fellow' and arg['<wants_accommodation>'] == 'Y':
 
-            # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
-            random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
+            if random_office is not None and random_living_space is not None:
+                # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
+                random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
 
-            # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
-            random_living_space.occupants[arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
+                # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
+                random_living_space.occupants[arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
 
-            print('Fellow {} has been added successfully!'.format(arg['<person_name>']))
-            print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
-            print('{} has been given living space: {}'.format(arg['<person_name>'], random_living_space.name))
+                print('Fellow {} has been added successfully!'.format(arg['<person_name>']))
+                print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
+                print('{} has been given living space: {}'.format(arg['<person_name>'], random_living_space.name))
+
+            if random_living_space is None:
+                self.andela_dojo['unallocated']['Living_Space'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
+                print('Fellow {} has unallocated Living Space'.format(arg['<person_name>']))
+
+            if random_office is None:
+                self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
+                print('Fellow {} has unallocated Office Space'.format(arg['<person_name>']))
 
         # If fellow does not want accommodation:
         if arg['<Fellow_or_Staff>'] == 'Fellow' and arg['<wants_accommodation>'] != 'Y':
 
-            # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
-            random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'N')
+            if random_office is not None:
+                # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
+                random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'N')
 
-            print('Fellow {} has been added successfully!'.format(arg['<person_name>']))
-            print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
+                print('Fellow {} has been added successfully!'.format(arg['<person_name>']))
+                print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
+
+            if random_office is None:
+                self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'N')
+                print('Fellow {} has unallocated Office Space'.format(arg['<person_name>']))
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
