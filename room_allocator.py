@@ -47,7 +47,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
         if arg['<room_type>'] == 'living':
 
             #  Add it as a value to the living_spaces dictionary in andela_dojo.
-            self.andela_dojo['living_spaces'][arg['<room_name>']] = LivingSpace(arg['<room_name>'])
+            for each_living_space in arg['<room_name>']:
+                self.andela_dojo['living_spaces'][each_living_space] = LivingSpace(each_living_space)
 
             print('A living space called {} has been successfully created!'.format(arg['<room_name>']))
 

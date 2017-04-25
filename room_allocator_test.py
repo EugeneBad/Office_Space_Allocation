@@ -49,12 +49,12 @@ class CreateRoomTest(unittest.TestCase):
 
     # Test create_room command creates a Living Space in some_dojo for type being 'living'
     def test_create_room_creates_LivingSpace(self):
-        arg = {'<room_type>': 'living', '<room_name>': 'Purple'}
+        arg = {'<room_type>': 'living', '<room_name>': ['Purple']}
 
         # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
         self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg)
 
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>']], LivingSpace),
+        self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][0]], LivingSpace),
                         msg='create_room command must create a LivingSpace for type equal to "living"')
 
     def test_create_room_can_create_multiple_Office(self):
@@ -76,9 +76,9 @@ class CreateRoomTest(unittest.TestCase):
         # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
         self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg)
 
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][0]], LivingSpace),
-                        msg='create_room command must be able to create several Offices at once')
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][1]], LivingSpace),
-                        msg='create_room command must be able to create several Offices at once')
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][2]], LivingSpace),
-                        msg='create_room command must be able to create several Offices at once')
+        self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][0]], LivingSpace),
+                        msg='create_room command must be able to create several LivingSpaces at once')
+        self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][1]], LivingSpace),
+                        msg='create_room command must be able to create several LivingSpaces at once')
+        self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][2]], LivingSpace),
+                        msg='create_room command must be able to create several LivingSpaces at once')
