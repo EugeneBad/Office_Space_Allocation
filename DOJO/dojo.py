@@ -4,3 +4,4 @@ class Dojo(dict):
 
         self['office_spaces'] = {}     # Assign office_spaces dictionary
         self['living_spaces'] = {}     # Assign living_spaces dictionary
+        self['unallocated'] = {'Office': {}, 'Living_Space': {}}

@@ -19,3 +19,7 @@ class DojoTest(unittest.TestCase):
     def test_dojo_object_has_living_spaces_dictionary(self):
         self.assertEqual(type(self.some_dojo['living_spaces']), dict,
                          msg='The Dojo object has no living_spaces dictionary')
+
+    def test_dojo_object_has_unallocated_dictionary(self):
+        self.assertEqual(type(self.some_dojo['unallocated']), dict,
+                         msg='The Dojo object has no living_spaces dictionary')
