@@ -19,3 +19,7 @@ class RoomTest(unittest.TestCase):
     def test_room_occupants_is_dictionary(self):
         self.assertEqual(type(self.office.occupants), dict, msg='Office space occupants is not a dictionary')
         self.assertEqual(type(self.living.occupants), dict, msg='Living space occupants is not a dictionary')
+
+    def test_maximum_room_occupants(self):
+        self.assertEqual(self.office.maximum_occupants, 6, msg='Wrong number of maximum office occupants')
+        self.assertEqual(self.oliving.maximum_occupants, 4, msg='Wrong number of maximum office occupants')
