@@ -12,7 +12,7 @@ class OfficeTest(unittest.TestCase):
         self.assertTrue(issubclass(Office, Room), msg='Office is not inheriting from Room')
 
     def test_office_name(self):
-        self.assertEqual(self.some_office.name, 'Grey', msg='Invalid office name')
+        self.assertEqual(self.some_office.name, 'Yellow', msg='Invalid office name')
 
     def test_office_type(self):
         self.assertEqual(self.some_office.type, 'office', msg='Office space type should office')
