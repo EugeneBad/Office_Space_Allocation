@@ -1,12 +1,6 @@
-class Room:
-    def __init__(self, type, name):
-        self.type = type
-        self.name = name
+from PERSON.person import Person
 
-        if self.type == 'living':
-            self.occupants = {}
-            self.maximum_occupants = 4
 
-        if self.type == 'office':
-            self.occupants = {'staff': {}, 'fellow': {}}
-            self.maximum_occupants = 6
+class Staff(Person):
+    def __init__(self, name):
+        super().__init__(name, 'staff')
