@@ -21,7 +21,8 @@ class CreateRoomTest(unittest.TestCase):
 
     # Test intro is correct
     def test_correct_intro(self):
-        self.assertEqual(self.interactive_session.intro, "\n\t\tEugene's random room allocator for Andela\n",
+        self.assertEqual(self.interactive_session.intro,
+                         "\n\n>>>>>>>>>>>>>>>>>>>Eugene's random room allocator for Andela<<<<<<<<<<<<<<<<<<<<\n",
                          msg='Wrong intro')
 
     # Test prompt is correct
@@ -129,7 +130,7 @@ class AddPersonTest(unittest.TestCase):
         self.assertTrue(isinstance(
             self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0]].occupants['Staff'][
                 arg_person['<person_name>']], Staff),
-                        msg='add_person command must create Staff and assign them an office.')
+            msg='add_person command must create Staff and assign them an office.')
 
     def test_fellow_is_allocted_office_and_living_space_when_desired(self):
         arg_person = {'<person_name>': 'Larry', '<Fellow_or_Staff>': 'Fellow', '<wants_accommodation>': 'Y'}
@@ -145,4 +146,4 @@ class AddPersonTest(unittest.TestCase):
         self.assertTrue(isinstance(
             self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0]].occupants['Fellows'][
                 arg_person['<person_name>']], Fellow),
-                        msg='add_person command must create Fellow and assign them an office and living room if they wish.')
+            msg='add_person command must create Fellow and assign them an office and living room if they wish.')

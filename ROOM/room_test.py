@@ -25,5 +25,5 @@ class RoomTest(unittest.TestCase):
         self.assertEqual(self.living.maximum_occupants, 4, msg='Wrong number of maximum office occupants')
 
     def test_office_occupants(self):
-        self.assertEqual(type(self.office.occupants['staff']), dict, msg='Staff dictionary in occupants does not exist')
-        self.assertEqual(type(self.office.occupants['fellow']), dict, msg='Living dictionary in occupants does not exist')
+        self.assertEqual(type(self.office.occupants['Staff']), dict, msg='Staff dictionary in occupants does not exist')
+        self.assertEqual(type(self.office.occupants['Fellows']), dict, msg='Living dictionary in occupants does not exist')

@@ -119,6 +119,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
                 print('Fellow {} has unallocated Office Space'.format(arg['<person_name>']))
 
+            if random_office is not None:
+
+                # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
+                random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
+
         # If fellow does not want accommodation:
         if arg['<Fellow_or_Staff>'] == 'Fellow' and arg['<wants_accommodation>'] != 'Y':
 
