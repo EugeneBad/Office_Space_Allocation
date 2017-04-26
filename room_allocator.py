@@ -181,6 +181,13 @@ class InteractiveRoomAllocator(cmd.Cmd):
         except KeyError:
             print("Office space with such name does not exist\n")
 
+    def do_print_allocations(self, arg):
+        """Usage: print_allocations"""
+
+        living_spaces = self.andela_dojo['living_spaces']
+        office_spaces = self.andela_dojo['office_spaces']
+
+    
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
