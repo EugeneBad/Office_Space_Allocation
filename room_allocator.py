@@ -33,15 +33,17 @@ class InteractiveRoomAllocator(cmd.Cmd):
     @docopt_cmd
     def do_create_room(self, arg):
         """Usage: create_room <room_type> <room_name>..."""
-
+        counter = 0
         #  Check if room is an office.
         if arg['<room_type>'] == 'office':
 
             #  Add it as a value to the office_spaces dictionary in andela_dojo.
             for each_office in arg['<room_name>']:
+
                 self.andela_dojo['office_spaces'][each_office] = Office(each_office)
 
-            print('An office called {} has been successfully created!'.format(arg['<room_name>']))
+                print('An office called {} has been successfully created!'.format(arg['<room_name>'][counter]))
+                counter += 1
 
         #  Check if room is a living space.
         if arg['<room_type>'] == 'living':
@@ -50,7 +52,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
             for each_living_space in arg['<room_name>']:
                 self.andela_dojo['living_spaces'][each_living_space] = LivingSpace(each_living_space)
 
-            print('A living space called {} has been successfully created!'.format(arg['<room_name>']))
+                print('A living space called {} has been successfully created!'.format(arg['<room_name>'][counter]))
+                counter += 1
 
     # Function to implement the CLI command add_person.
     @docopt_cmd
@@ -100,15 +103,12 @@ class InteractiveRoomAllocator(cmd.Cmd):
         # If fellow wants accommodation:
         if arg['<Fellow_or_Staff>'] == 'Fellow' and arg['<wants_accommodation>'] == 'Y':
 
-            if random_office is not None and random_living_space is not None:
-                # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
-                random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
+            if random_living_space is not None:
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
                 random_living_space.occupants[arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
 
                 print('Fellow {} has been added successfully!'.format(arg['<person_name>']))
-                print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
                 print('{} has been given living space: {}'.format(arg['<person_name>'], random_living_space.name))
 
             if random_living_space is None:
@@ -133,16 +133,30 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'N')
                 print('Fellow {} has unallocated Office Space'.format(arg['<person_name>']))
 
-    def do_quit(self):
+    def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
-        print('Good Bye!')
+        print('Good Bye')
         exit()
 
-    def do_print_room(self):
-        """Usage: print_room <room_name>
+    def do_print_room(self, arg):
+        """Usage: print_room <room_name>"""
 
+        try:
+            room_requested = self.andela_dojo['living_spaces'][arg]
 
+            print('Fellows in living space: {}'.format(arg))
+            print('----------------------------------------')
+
+            if len(room_requested.occupants) > 0:
+                for Fellows in room_requested.occupants.values():
+
+                    print(Fellows.name)
+                print('\n')
+            else:
+                print('None\n')
+
+        
 
 
 if __name__ == '__main__':
