@@ -178,7 +178,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
             else:
                 print('None\n')
 
-        
+        except KeyError:
+            print("Office space with such name does not exist\n")
 
 
 if __name__ == '__main__':
