@@ -188,8 +188,10 @@ class InteractiveRoomAllocator(cmd.Cmd):
         office_spaces = self.andela_dojo['office_spaces']
 
         if arg == 'Y':
-            output = open("E:\\allocations.txt", "w+")
+
+            output = open("E:\have_allocations.txt", "w+")
         else:
+            print('Dear')
             output = None
 
         for living_space in living_spaces.values():
@@ -216,13 +218,44 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             if len(office_space.occupants['Staff'].values()):
                 for Staff in office_space.occupants['Staff'].values():
-                    print(Staff.name, end=', ', file=output, flush=True)
+                    print(Staff.name + ', ', file=output, flush=True)
             else:
                 print('No Staff', file=output, flush=True)
+
+            if arg == 'Y':
+
+                output.close()
 
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [<output>] """
 
+        unallocated_office_space = self.andela_dojo['unallocated']['Office']
+        unallocated_living_space = self.andela_dojo['unallocated']['Living_Space']
+
+        if arg == 'Y':
+            output = open("E:\have_no_allocations.txt", "w+")
+        else:
+            output = None
+
+        print('\nPersons with unallocated living space:', file=output, flush=True)
+        print('----------------------------------------', file=output, flush=True)
+
+        if len(unallocated_living_space.values()) > 0:
+            for Person in unallocated_living_space.values():
+                print(Person.name, end=', ', file=output, flush=True)
+            print('\n', file=output, flush=True)
+        else:
+            print('None\n', file=output, flush=True)
+
+        print('\nPersons with unallocated office space:', file=output, flush=True)
+        print('----------------------------------------', file=output, flush=True)
+
+        if len(unallocated_office_space.values()) > 0:
+            for Person in unallocated_office_space.values():
+                print(Person.name, end=', ', file=output, flush=True)
+            print('\n', file=output, flush=True)
+        else:
+            print('None\n', file=output, flush=True)
 
 
 if __name__ == '__main__':
