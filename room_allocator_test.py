@@ -118,15 +118,31 @@ class AddPersonTest(unittest.TestCase):
             msg='add_person command must create Person with unallocated living space if their is no free living space')
 
     def test_staff_is_allocated_office(self):
-        arg = {'<person_name>': 'James', '<Fellow_or_Staff>': 'Staff', '<wants_accommodation>': 'N'}
+        arg_person = {'<person_name>': 'James', '<Fellow_or_Staff>': 'Staff', '<wants_accommodation>': 'N'}
 
-        arg1 = {'<room_type>': 'office', '<room_name>': ['Orange']}
+        arg_office = {'<room_type>': 'office', '<room_name>': ['Orange']}
 
-        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg1)
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office)
 
-        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg)
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_person)
 
         self.assertTrue(isinstance(
-            self.interactive_session.andela_dojo['office_spaces'][arg1['<room_name>'][0]].occupants['Staff'][
-                arg['<person_name>']], Staff),
+            self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0]].occupants['Staff'][
+                arg_person['<person_name>']], Staff),
                         msg='add_person command must create Staff and assign them an office.')
+
+    def test_fellow_is_allocted_office_and_living_space_when_desired(self):
+        arg_person = {'<person_name>': 'Larry', '<Fellow_or_Staff>': 'Fellow', '<wants_accommodation>': 'Y'}
+
+        arg_office = {'<room_type>': 'office', '<room_name>': ['Orange']}
+        arg_living = {'<room_type>': 'living', '<room_name>': ['Black']}
+
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office)
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_living)
+
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_person)
+
+        self.assertTrue(isinstance(
+            self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0]].occupants['Fellows'][
+                arg_person['<person_name>']], Fellow),
+                        msg='add_person command must create Fellow and assign them an office and living room if they wish.')
