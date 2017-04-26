@@ -3,6 +3,7 @@ from FELLOW.fellow import Fellow
 from LIVINGSPACE.livingspace import LivingSpace
 from OFFICE.office import Office
 from PERSON.person import Person
+from STAFF.staff import Staff
 from ROOM.room import Room
 from room_allocator import InteractiveRoomAllocator
 import unittest
@@ -44,8 +45,9 @@ class CreateRoomTest(unittest.TestCase):
         # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
         self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg)
 
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][0]], Office),
-                        msg='create_room command must create an Office for type equal to "office"')
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][0]], Office),
+            msg='create_room command must create an Office for type equal to "office"')
 
     # Test create_room command creates a Living Space in some_dojo for type being 'living'
     def test_create_room_creates_LivingSpace(self):
@@ -54,8 +56,9 @@ class CreateRoomTest(unittest.TestCase):
         # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
         self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg)
 
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][0]], LivingSpace),
-                        msg='create_room command must create a LivingSpace for type equal to "living"')
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][0]], LivingSpace),
+            msg='create_room command must create a LivingSpace for type equal to "living"')
 
     def test_create_room_can_create_multiple_Office(self):
         arg = {'<room_type>': 'office', '<room_name>': ['Yellow', 'Black', 'Red']}
@@ -63,12 +66,15 @@ class CreateRoomTest(unittest.TestCase):
         # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
         self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg)
 
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][0]], Office),
-                        msg='create_room command must be able to create several Offices at once')
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][1]], Office),
-                        msg='create_room command must be able to create several Offices at once')
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][2]], Office),
-                        msg='create_room command must be able to create several Offices at once')
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][0]], Office),
+            msg='create_room command must be able to create several Offices at once')
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][1]], Office),
+            msg='create_room command must be able to create several Offices at once')
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['office_spaces'][arg['<room_name>'][2]], Office),
+            msg='create_room command must be able to create several Offices at once')
 
     def test_create_room_can_create_multiple_LivingSpace(self):
         arg = {'<room_type>': 'living', '<room_name>': ['Orange', 'Blue', 'Cream']}
@@ -76,9 +82,51 @@ class CreateRoomTest(unittest.TestCase):
         # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
         self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg)
 
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][0]], LivingSpace),
-                        msg='create_room command must be able to create several LivingSpaces at once')
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][1]], LivingSpace),
-                        msg='create_room command must be able to create several LivingSpaces at once')
-        self.assertTrue(isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][2]], LivingSpace),
-                        msg='create_room command must be able to create several LivingSpaces at once')
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][0]], LivingSpace),
+            msg='create_room command must be able to create several LivingSpaces at once')
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][1]], LivingSpace),
+            msg='create_room command must be able to create several LivingSpaces at once')
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][2]], LivingSpace),
+            msg='create_room command must be able to create several LivingSpaces at once')
+
+
+class AddPersonTest(unittest.TestCase):
+    def setUp(self):
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
+
+    def test_unallocated_Person(self):
+        arg = {'<person_name>': 'James', '<Fellow_or_Staff>': 'Staff', '<wants_accommodation>': 'N'}
+
+        # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg)
+
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['unallocated']['Office'][arg['<person_name>']], Person),
+            msg='add_person command must create Person with unallocated office if their is no free office space')
+
+        arg = {'<person_name>': 'David', '<Fellow_or_Staff>': 'Fellow', '<wants_accommodation>': 'Y'}
+
+        # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg)
+
+        self.assertTrue(
+            isinstance(self.interactive_session.andela_dojo['unallocated']['Living_Space'][arg['<person_name>']],
+                       Person),
+            msg='add_person command must create Person with unallocated living space if their is no free living space')
+
+    def test_staff_is_allocated_office(self):
+        arg = {'<person_name>': 'James', '<Fellow_or_Staff>': 'Staff', '<wants_accommodation>': 'N'}
+
+        arg1 = {'<room_type>': 'office', '<room_name>': ['Orange']}
+
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg1)
+
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg)
+
+        self.assertTrue(isinstance(
+            self.interactive_session.andela_dojo['office_spaces'][arg1['<room_name>'][0]].occupants['Staff'][
+                arg['<person_name>']], Staff),
+                        msg='add_person command must create Staff and assign them an office.')
