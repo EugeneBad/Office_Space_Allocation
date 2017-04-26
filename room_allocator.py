@@ -19,7 +19,7 @@ import random
 
 
 class InteractiveRoomAllocator(cmd.Cmd):
-    intro = "\n\t\tEugene's random room allocator for Andela\n"
+    intro = "\n\n>>>>>>>>>>>>>>>>>>>Eugene's random room allocator for Andela<<<<<<<<<<<<<<<<<<<<\n"
     prompt = "Room_Allocator: "
     file = None
 
@@ -136,7 +136,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
-        print('Good Bye')
+        print('\n\t\t****************Good Bye****************')
         exit()
 
     def do_print_room(self, arg):
@@ -182,38 +182,44 @@ class InteractiveRoomAllocator(cmd.Cmd):
             print("Office space with such name does not exist\n")
 
     def do_print_allocations(self, arg):
-        """Usage: print_allocations"""
+        """Usage: print_allocations [<output>]"""
 
         living_spaces = self.andela_dojo['living_spaces']
         office_spaces = self.andela_dojo['office_spaces']
 
+        if arg == 'Y':
+            output = open("E:\\allocations.txt", "w+")
+        else:
+            output = None
+
         for living_space in living_spaces.values():
-            print('Fellows in living space: {}'.format(living_space.name))
-            print('----------------------------------------')
+            print('Fellows in living space: {}'.format(living_space.name), file=output, flush=True)
+            print('----------------------------------------', file=output, flush=True)
 
             if len(living_space.occupants.values()) > 0:
                 for Fellows in living_space.occupants.values():
-                    print(Fellows.name + ', ')
-                print('\n')
+                    print(Fellows.name + ', ', file=output, flush=True)
+                print('\n', file=output, flush=True)
             else:
-                print('None')
+                print('None\n', file=output, flush=True)
 
         for office_space in office_spaces.values():
 
-            print('Occupants of office space: {}'.format(office_space.name))
-            print('----------------------------------------')
+            print('Occupants of office space: {}'.format(office_space.name), file=output, flush=True)
+            print('----------------------------------------', file=output, flush=True)
 
             if len(office_space.occupants['Fellows'].values()) > 0:
                 for Fellows in office_space.occupants['Fellows'].values():
-                    print(Fellows.name + ', ')
+                    print(Fellows.name + ', ', file=output, flush=True)
             else:
-                print('No Fellows')
+                print('No Fellows', file=output, flush=True)
 
             if len(office_space.occupants['Staff'].values()):
                 for Staff in office_space.occupants['Staff'].values():
-                    print(Staff.name, end=', ')
+                    print(Staff.name, end=', ', file=output, flush=True)
             else:
-                print('None')
+                print('No Staff', file=output, flush=True)
+
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
