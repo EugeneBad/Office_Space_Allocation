@@ -187,7 +187,18 @@ class InteractiveRoomAllocator(cmd.Cmd):
         living_spaces = self.andela_dojo['living_spaces']
         office_spaces = self.andela_dojo['office_spaces']
 
-    
+        for living_space in living_spaces.values():
+            print('Fellows in living space: {}'.format(living_space.name))
+            print('----------------------------------------')
+
+            if len(living_space.occupants.values()) > 0:
+                for Fellows in living_space.occupants.values():
+                    print(Fellows.name + ', ')
+                print('\n')
+            else:
+                print('None')
+
+        
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
