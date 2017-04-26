@@ -159,6 +159,25 @@ class InteractiveRoomAllocator(cmd.Cmd):
         except KeyError:
             print("Living space with such name does not exist\n")
 
+        try:
+            room_requested = self.andela_dojo['office_spaces'][arg]
+
+            print('Staff in office space: {}'.format(arg))
+            print('----------------------------------------')
+            if len(room_requested.occupants['Staff']) > 0:
+                for Staff in room_requested.occupants['Staff'].values():
+                    print(Staff.name)
+                print('\n')
+            else:
+                print('None\n')
+            print('Fellows in office space: {}'.format(arg))
+            if len(room_requested.occupants['Staff']) > 0:
+                for Fellows in room_requested.occupants['Fellows'].values():
+                    print(Fellows.name)
+                print('\n')
+            else:
+                print('None\n')
+
         
 
 
