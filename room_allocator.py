@@ -198,7 +198,22 @@ class InteractiveRoomAllocator(cmd.Cmd):
             else:
                 print('None')
 
-        
+        for office_space in office_spaces.values():
+
+            print('Occupants of office space: {}'.format(office_space.name))
+            print('----------------------------------------')
+
+            if len(office_space.occupants['Fellows'].values()) > 0:
+                for Fellows in office_space.occupants['Fellows'].values():
+                    print(Fellows.name + ', ')
+            else:
+                print('No Fellows')
+
+            if len(office_space.occupants['Staff'].values()):
+                for Staff in office_space.occupants['Staff'].values():
+                    print(Staff.name, end=', ')
+            else:
+                print('None')
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
