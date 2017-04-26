@@ -220,6 +220,10 @@ class InteractiveRoomAllocator(cmd.Cmd):
             else:
                 print('No Staff', file=output, flush=True)
 
+    def do_print_unallocated(self, arg):
+        """Usage: print_unallocated [<output>] """
+
+
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
