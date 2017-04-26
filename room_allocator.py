@@ -133,6 +133,13 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'N')
                 print('Fellow {} has unallocated Office Space'.format(arg['<person_name>']))
 
+    def do_quit(self, arg):
+        """Quits out of Interactive Mode."""
+
+        print('Good Bye!')
+        exit()
+
+
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
     InteractiveRoomAllocator(Dojo()).cmdloop()
