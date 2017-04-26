@@ -156,6 +156,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
             else:
                 print('None\n')
 
+        except KeyError:
+            print("Living space with such name does not exist\n")
+
         
 
 
