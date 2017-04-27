@@ -267,7 +267,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         pass
 
     def do_save_state(self, arg):
-        """Usage: load_state [<output>]"""
+        """Usage: load_state [<output>] """
         with open("status.pickle", "wb") as status:
             pickle.dump(self.andela_dojo(), status, protocol=pickle.HIGHEST_PROTOCOL)
 
