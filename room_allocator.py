@@ -268,12 +268,12 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
     def do_load_state(self, arg):
         """Usage load_state [<output>] """
-        pass
+        engine = create_engine('sqlite:///interactive_status.db', echo=False)
 
     def do_save_state(self, arg):
         """Usage: load_state [<output>] """
         with open("status.pickle", "wb") as status:
-            pickle.dump(self.andela_dojo(), status, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(self.andela_dojo, status, protocol=pickle.HIGHEST_PROTOCOL)
 
         with open("status.pickle", 'rb') as status_file:
             status_bin = status_file.read()
