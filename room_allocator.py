@@ -284,7 +284,12 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         saved_state = State(state_name='learn', state_file=status_bin)
 
-        Session = sessionmaker(bind=status_engine)
+        some_session = sessionmaker(bind=status_engine)
+        session = some_session()
+
+        session.add(saved_state)
+
+
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
