@@ -14,6 +14,7 @@ from status import State
 from sqlalchemy.orm import sessionmaker
 import pickle
 
+
 class CreateRoomTest(unittest.TestCase):
     def setUp(self):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
@@ -154,12 +155,10 @@ class AddPersonTest(unittest.TestCase):
 
 
 class SaveStateTest(unittest.TestCase):
-
     def setUp(self):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
     def test_data_saved_by_save_state(self):
-
         self.interactive_session.do_save_state.__wrapped__(self.interactive_session, {})
 
         engine = create_engine('sqlite:///interactive_status.db', echo=False)
@@ -168,7 +167,6 @@ class SaveStateTest(unittest.TestCase):
         session = Session()
 
         for back in session.query(State).filter(State.state_name == 'learn'):
-
             requested_state = pickle.loads(back.state_file)
 
         self.assertTrue(isinstance(requested_state, Dojo), msg='save_state does not save the dojo object ')
@@ -179,4 +177,11 @@ class PrintUnallocatedTest(unittest.TestCase):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
     def test_print_unallocated(self):
-        self.assertTrue(self.interactive_session.do_print_unallocated.__wrapped__(self.interactive_session, {}) is None)
+        self.assertTrue(self.interactive_session.do_print_unallocated.__wrapped__(self.interactive_session, {}) is None,
+                        msg='print_unallocated command is malfunctioningl')
+
+
+class PrintAllocatedTest(unittest.TestCase):
+    def setUp(self):
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
+
