@@ -150,12 +150,13 @@ class AddPersonTest(unittest.TestCase):
 
 
 class SaveStateTest(unittest.TestCase):
+
     def setUp(self):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
     def test_data_saved_by_save_state(self):
 
         self.interactive_session.do_save_state.__wrapped__(self.interactive_session)
-        
+
 
 
