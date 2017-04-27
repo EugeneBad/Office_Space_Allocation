@@ -277,7 +277,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             requested_state = pickle.loads(back.state_file)
 
-        
+        InteractiveRoomAllocator(requested_state).cmdloop()
 
     def do_save_state(self, arg):
         """Usage: load_state [<output>] """
