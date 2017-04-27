@@ -16,6 +16,8 @@ from STAFF.staff import Staff
 import pickle
 from docopt_decorator import docopt_cmd
 import random
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 
 
 class InteractiveRoomAllocator(cmd.Cmd):
@@ -274,6 +276,10 @@ class InteractiveRoomAllocator(cmd.Cmd):
         with open("status.pickle", 'rb') as status_file:
             status_bin = status_file.read()
 
+        status_engine = create_engine('sqlite:///:memory:', echo=False)
+        Base = declarative_base()
+        Base.metadata.create_all(status_engine)
+        
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
