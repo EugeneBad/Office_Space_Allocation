@@ -130,7 +130,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
                 random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
-                print('{} has been given living space: {}'.format(arg['<person_name>'], random_office.name))
+                print('{} has been given office space: {}'.format(arg['<person_name>'], random_office.name))
 
         # If fellow does not want accommodation:
         if arg['<Fellow_or_Staff>'].lower() == 'fellow' and arg['<wants_accommodation>'].lower() != 'y':
@@ -201,7 +201,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         living_spaces = self.andela_dojo['living_spaces']
         office_spaces = self.andela_dojo['office_spaces']
 
-        if arg == 'Y':
+        if arg['<output>'] == 'Y':
 
             output = open("E:\have_allocations.txt", "w+")
         else:
@@ -248,7 +248,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         unallocated_office_space = self.andela_dojo['unallocated']['Office']
         unallocated_living_space = self.andela_dojo['unallocated']['Living_Space']
 
-        if arg == 'Y':
+        if arg['<output>'] == 'Y':
             output = open("E:\have_no_allocations.txt", "w+")
         else:
             output = None
@@ -287,7 +287,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         try:
             state = arg['<output>'].lower()
 
-        except KeyError:
+        except (KeyError, AttributeError):
             state = 'default'
 
         for back in session.query(State).filter(State.state_name == state):
@@ -312,7 +312,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         try:
             saved_state = State(state_name=arg['<output>'].lower(), state_file=status_bin)
 
-        except KeyError:
+        except (KeyError, AttributeError):
             saved_state = State(state_name='default', state_file=status_bin)
 
         some_session = sessionmaker(bind=status_engine)
