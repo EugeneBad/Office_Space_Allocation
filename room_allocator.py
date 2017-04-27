@@ -69,7 +69,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         add_person <person_name> <Fellow_or_Staff> [<wants_accommodation>]"""
 
         # Check if person is staff and wants accommodation.
-        if arg['<Fellow_or_Staff>'].lower() == 'staff' and arg['<wants_accommodation>'].lower == 'y':
+        if arg['<Fellow_or_Staff>'].lower() == 'staff' and arg['<wants_accommodation>'] == 'Y':
             print('Staff cannot be allocated living spaces')
 
         # Randomly select an office from the office_spaces dictionary in andela_dojo,
@@ -95,7 +95,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
             random_living_space = None
 
         # If staff entry is valid, add person to Staff dictionary in the occupants attribute of the random_office
-        if arg['<Fellow_or_Staff>'].lower() == 'staff' and arg['<wants_accommodation>'].lower() != 'y':
+        if arg['<Fellow_or_Staff>'].lower() == 'staff' and str(arg['<wants_accommodation>']).lower() != 'y':
 
             if random_office is not None:
                 random_office.occupants['Staff'][arg['<person_name>']] = Staff(arg['<person_name>'])
@@ -108,7 +108,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 print('Staff {} has unallocated Office Space'.format(arg['<person_name>']))
 
         # If fellow wants accommodation:
-        if arg['<Fellow_or_Staff>'].lower() == 'fellow' and arg['<wants_accommodation>'].lower() == 'y':
+        if arg['<Fellow_or_Staff>'].lower() == 'fellow' and str(arg['<wants_accommodation>']).lower() == 'y':
 
             if random_living_space is not None:  # If living space is available
 
@@ -133,7 +133,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 print('{} has been given office space: {}'.format(arg['<person_name>'], random_office.name))
 
         # If fellow does not want accommodation:
-        if arg['<Fellow_or_Staff>'].lower() == 'fellow' and arg['<wants_accommodation>'].lower() != 'y':
+        if arg['<Fellow_or_Staff>'].lower() == 'fellow' and str(arg['<wants_accommodation>']).lower() != 'y':
 
             if random_office is not None:
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
@@ -225,7 +225,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
             # Print the name of each occupant if the room is not empty
             if len(living_space.occupants.values()) > 0:
                 for Fellows in living_space.occupants.values():
-                    print(Fellows.name + ', ', file=output, flush=True)
+                    print(Fellows.name, end=', ', file=output, flush=True)
                 print('\n', file=output, flush=True)
 
             else: # When room is empty
@@ -239,13 +239,13 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             if len(office_space.occupants['Fellows'].values()) > 0:
                 for Fellows in office_space.occupants['Fellows'].values():
-                    print(Fellows.name + ', ', file=output, flush=True)
+                    print(Fellows.name, end=', ', file=output, flush=True)
             else:
                 print('No Fellows', file=output, flush=True)
 
             if len(office_space.occupants['Staff'].values()):
                 for Staff in office_space.occupants['Staff'].values():
-                    print(Staff.name + ', ', file=output, flush=True)
+                    print(Staff.name, end=', ', file=output, flush=True)
             else:
                 print('No Staff', file=output, flush=True)
 

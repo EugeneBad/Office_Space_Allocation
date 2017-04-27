@@ -32,7 +32,7 @@ class CreateRoomTest(unittest.TestCase):
 
     # Test prompt is correct
     def test_correct_prompt(self):
-        self.assertEqual(self.interactive_session.prompt, "Room_Allocator: ", msg='Wrong prompt')
+        self.assertEqual(self.interactive_session.prompt, "\nRoom_Allocator: ", msg='Wrong prompt')
 
     # Test create_room command creates a Room in some_dojo
     def test_create_room_creates_Room(self):
