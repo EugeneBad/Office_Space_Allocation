@@ -13,7 +13,7 @@ from FELLOW.fellow import Fellow
 from LIVINGSPACE.livingspace import LivingSpace
 from OFFICE.office import Office
 from STAFF.staff import Staff
-
+import pickle
 from docopt_decorator import docopt_cmd
 import random
 
@@ -261,6 +261,10 @@ class InteractiveRoomAllocator(cmd.Cmd):
             print('\n', file=output, flush=True)
         else:
             print('None\n', file=output, flush=True)
+
+    def do_load_save_state(self, arg):
+        """Usage: load_state """
+                
 
 
 if __name__ == '__main__':
