@@ -205,7 +205,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             output = open("E:\have_allocations.txt", "w+")
         else:
-            print('Dear')
+
             output = None
 
         for living_space in living_spaces.values():
@@ -284,7 +284,13 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         session = Session()
 
-        for back in session.query(State).filter(State.state_name == 'learn'):
+        try:
+            state = arg['<output>'].lower()
+
+        except KeyError:
+            state = 'default'
+
+        for back in session.query(State).filter(State.state_name == state):
 
             requested_state = pickle.loads(back.state_file)
 
@@ -303,7 +309,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
         Base = declarative_base()
         Base.metadata.create_all(status_engine)
 
-        saved_state = State(state_name='learn', state_file=status_bin)
+        try:
+            saved_state = State(state_name=arg['<output>'].lower(), state_file=status_bin)
+
+        except KeyError:
+            saved_state = State(state_name='default', state_file=status_bin)
 
         some_session = sessionmaker(bind=status_engine)
         session = some_session()
