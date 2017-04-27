@@ -178,3 +178,5 @@ class PrintUnallocatedTest(unittest.TestCase):
     def setUp(self):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
+    def test_print_unallocated(self):
+        self.assertTrue(self.interactive_session.do_print_unallocated.__wrapped__(self.interactive_session, {}) is None)
