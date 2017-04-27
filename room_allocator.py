@@ -27,7 +27,7 @@ from sqlalchemy.orm import sessionmaker
 
 # Main class called to maintain interactive session
 class InteractiveRoomAllocator(cmd.Cmd):
-    intro = "\n\n>>>>>>>>>>>>>>>>>>>Eugene's random room allocator for Andela<<<<<<<<<<<<<<<<<<<<\n"
+    intro = "\n\n>>>>>>>>>>>>>>>>>  Eugene's random room allocator for Andela  <<<<<<<<<<<<<<<<<<\n"
     prompt = "\nRoom_Allocator: "
     file = None
 
@@ -66,7 +66,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
     @docopt_cmd
     def do_add_person(self, arg):
         """Usage:
-        add_person <person_name> <Fellow_or_Staff> [<wants_accommodation>]"""
+        add_person <first_name> <last_name> <Fellow_or_Staff> [<wants_accommodation>]"""
+
+        person_name = arg['<first_name>'] + ' ' + arg['<last_name>']
 
         # Check if person is staff and wants accommodation.
         if arg['<Fellow_or_Staff>'].lower() == 'staff' and arg['<wants_accommodation>'] == 'Y':
@@ -98,14 +100,14 @@ class InteractiveRoomAllocator(cmd.Cmd):
         if arg['<Fellow_or_Staff>'].lower() == 'staff' and str(arg['<wants_accommodation>']).lower() != 'y':
 
             if random_office is not None:
-                random_office.occupants['Staff'][arg['<person_name>']] = Staff(arg['<person_name>'])
+                random_office.occupants['Staff'][person_name] = Staff(person_name)
 
-                print('Staff {} has been added successfully!'.format(arg['<person_name>']))
-                print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
+                print('\n\tStaff {} has been added successfully!'.format(person_name))
+                print('\t{} has been given office: {}'.format(person_name, random_office.name))
 
             if random_office is None:
-                self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Staff(arg['<person_name>'])
-                print('Staff {} has unallocated Office Space'.format(arg['<person_name>']))
+                self.andela_dojo['unallocated']['Office'][person_name] = Staff(person_name)
+                print('\n\tStaff {} has unallocated Office Space'.format(person_name))
 
         # If fellow wants accommodation:
         if arg['<Fellow_or_Staff>'].lower() == 'fellow' and str(arg['<wants_accommodation>']).lower() == 'y':
@@ -113,38 +115,38 @@ class InteractiveRoomAllocator(cmd.Cmd):
             if random_living_space is not None:  # If living space is available
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
-                random_living_space.occupants[arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
+                random_living_space.occupants[person_name] = Fellow(person_name, 'Y')
 
-                print('Fellow {} has been added successfully!'.format(arg['<person_name>']))
-                print('{} has been given living space: {}'.format(arg['<person_name>'], random_living_space.name))
+                print('\n\tFellow {} has been added successfully!'.format(person_name))
+                print('\t{} has been given living space: {}'.format(person_name, random_living_space.name))
 
             if random_living_space is None:  # If living space is not available
-                self.andela_dojo['unallocated']['Living_Space'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
-                print('Fellow {} has unallocated Living Space'.format(arg['<person_name>']))
+                self.andela_dojo['unallocated']['Living_Space'][person_name] = Fellow(person_name, 'Y')
+                print('\n\tFellow {} has unallocated Living Space'.format(person_name))
 
             if random_office is None: # If office space is not available
-                self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
-                print('Fellow {} has unallocated Office Space'.format(arg['<person_name>']))
+                self.andela_dojo['unallocated']['Office'][person_name] = Fellow(person_name, 'Y')
+                print('\n\tFellow {} has unallocated Office Space'.format(person_name))
 
             if random_office is not None: # If office space is  available
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
-                random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
-                print('{} has been given office space: {}'.format(arg['<person_name>'], random_office.name))
+                random_office.occupants['Fellows'][person_name] = Fellow(person_name, 'Y')
+                print('\n\t{} has been given office space: {}'.format(person_name, random_office.name))
 
         # If fellow does not want accommodation:
         if arg['<Fellow_or_Staff>'].lower() == 'fellow' and str(arg['<wants_accommodation>']).lower() != 'y':
 
             if random_office is not None:
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
-                random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'N')
+                random_office.occupants['Fellows'][person_name] = Fellow(person_name, 'N')
 
-                print('Fellow {} has been added successfully!'.format(arg['<person_name>']))
-                print('{} has been given office: {}'.format(arg['<person_name>'], random_office.name))
+                print('\n\tFellow {} has been added successfully!'.format(person_name))
+                print('\t{} has been given office: {}'.format(person_name, random_office.name))
 
             if random_office is None:
-                self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'N')
-                print('Fellow {} has unallocated Office Space'.format(arg['<person_name>']))
+                self.andela_dojo['unallocated']['Office'][person_name] = Fellow(person_name, 'N')
+                print('\n\tFellow {} has unallocated Office Space'.format(person_name))
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
@@ -320,6 +322,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
             requested_state = pickle.loads(back.state_file)
 
         # Reload the interactive session with retrieved object as self.andela_dojo
+        print('Exiting........')
         InteractiveRoomAllocator(requested_state).cmdloop()
 
     # Save interactive state to database
@@ -351,7 +354,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         session.add(saved_state)  # Add session
         session.commit()  # Commit session
-
+        print('\n\tSave complete')
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
