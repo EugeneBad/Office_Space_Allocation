@@ -42,7 +42,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         """Usage: create_room <room_type> <room_name>..."""
         counter = 0
         #  Check if room is an office.
-        if arg['<room_type>'] == 'office':
+        if arg['<room_type>'].lower() == 'office':
 
             #  Add it as a value to the office_spaces dictionary in andela_dojo.
             for each_office in arg['<room_name>']:
@@ -53,7 +53,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 counter += 1
 
         #  Check if room is a living space.
-        if arg['<room_type>'] == 'living':
+        if arg['<room_type>'].lower() == 'living':
 
             #  Add it as a value to the living_spaces dictionary in andela_dojo.
             for each_living_space in arg['<room_name>']:
@@ -69,7 +69,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         add_person <person_name> <Fellow_or_Staff> [<wants_accommodation>]"""
 
         # Check if person is staff and wants accommodation.
-        if arg['<Fellow_or_Staff>'] == 'Staff' and arg['<wants_accommodation>'] == 'Y':
+        if arg['<Fellow_or_Staff>'].lower() == 'staff' and arg['<wants_accommodation>'].lower == 'y':
             print('Staff cannot be allocated living spaces')
 
         # Randomly select an office from the office_spaces dictionary in andela_dojo,
@@ -95,7 +95,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
             random_living_space = None
 
         # If staff entry is valid, add person to Staff dictionary in the occupants attribute of the random_office
-        if arg['<Fellow_or_Staff>'] == 'Staff' and arg['<wants_accommodation>'] != 'Y':
+        if arg['<Fellow_or_Staff>'].lower() == 'staff' and arg['<wants_accommodation>'].lower() != 'y':
 
             if random_office is not None:
                 random_office.occupants['Staff'][arg['<person_name>']] = Staff(arg['<person_name>'])
@@ -108,7 +108,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 print('Staff {} has unallocated Office Space'.format(arg['<person_name>']))
 
         # If fellow wants accommodation:
-        if arg['<Fellow_or_Staff>'] == 'Fellow' and arg['<wants_accommodation>'] == 'Y':
+        if arg['<Fellow_or_Staff>'].lower() == 'fellow' and arg['<wants_accommodation>'].lower() == 'y':
 
             if random_living_space is not None:
 
@@ -133,7 +133,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 print('{} has been given living space: {}'.format(arg['<person_name>'], random_office.name))
 
         # If fellow does not want accommodation:
-        if arg['<Fellow_or_Staff>'] == 'Fellow' and arg['<wants_accommodation>'] != 'Y':
+        if arg['<Fellow_or_Staff>'].lower() == 'fellow' and arg['<wants_accommodation>'].lower() != 'y':
 
             if random_office is not None:
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
