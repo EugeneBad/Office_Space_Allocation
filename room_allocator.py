@@ -25,16 +25,16 @@ from status import State
 from sqlalchemy.orm import sessionmaker
 
 
+# Main class called to maintain interactive session
 class InteractiveRoomAllocator(cmd.Cmd):
     intro = "\n\n>>>>>>>>>>>>>>>>>>>Eugene's random room allocator for Andela<<<<<<<<<<<<<<<<<<<<\n"
     prompt = "Room_Allocator: "
     file = None
 
+    # Class takes in a Dojo object to work with
     def __init__(self, dojo_object):
         super().__init__()
         self.andela_dojo = dojo_object
-
-    # Create the Dojo object.
 
     # Function to implement the CLI command create_room.
     @docopt_cmd
@@ -74,7 +74,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         # Randomly select an office from the office_spaces dictionary in andela_dojo,
         # store it in random_office variable
-        office_list = [office for office in self.andela_dojo['office_spaces'].values() if len(office.occupants) < 7]
+        office_list = [office for office in self.andela_dojo['office_spaces'].values() if not len(office.occupants) > 6]
 
         if len(office_list) > 0:
             random_office_index = random.randint(0, len(office_list)-1)
@@ -85,7 +85,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         # Randomly select a living space from the living_spaces dictionary in andela_dojo,
         # store it in random_living_space variable
-        living_space_list = [living_space for living_space in self.andela_dojo['living_spaces'].values() if len(living_space.occupants) < 5]
+        living_space_list = [living_space for living_space in self.andela_dojo['living_spaces'].values() if not len(living_space.occupants) > 4]
 
         if len(living_space_list) > 0:
             random_living_space_index = random.randint(0, len(living_space_list)-1)
@@ -110,7 +110,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         # If fellow wants accommodation:
         if arg['<Fellow_or_Staff>'].lower() == 'fellow' and arg['<wants_accommodation>'].lower() == 'y':
 
-            if random_living_space is not None:
+            if random_living_space is not None:  # If living space is available
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
                 random_living_space.occupants[arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
@@ -118,15 +118,15 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 print('Fellow {} has been added successfully!'.format(arg['<person_name>']))
                 print('{} has been given living space: {}'.format(arg['<person_name>'], random_living_space.name))
 
-            if random_living_space is None:
+            if random_living_space is None:  # If living space is not available
                 self.andela_dojo['unallocated']['Living_Space'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
                 print('Fellow {} has unallocated Living Space'.format(arg['<person_name>']))
 
-            if random_office is None:
+            if random_office is None: # If office space is not available
                 self.andela_dojo['unallocated']['Office'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
                 print('Fellow {} has unallocated Office Space'.format(arg['<person_name>']))
 
-            if random_office is not None:
+            if random_office is not None: # If office space is  available
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
                 random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
@@ -155,45 +155,49 @@ class InteractiveRoomAllocator(cmd.Cmd):
     def do_print_room(self, arg):
         """Usage: print_room <room_name>"""
 
-        try:
+        try:  # When living space exists
             room_requested = self.andela_dojo['living_spaces'][arg]
 
             print('Fellows in living space: {}'.format(arg))
             print('----------------------------------------')
 
-            if len(room_requested.occupants) > 0:
+            if len(room_requested.occupants) > 0:  # If room has people in it
                 for Fellows in room_requested.occupants.values():
 
                     print(Fellows.name)
                 print('\n')
-            else:
+            else:  # If room is empty
                 print('None\n')
 
-        except KeyError:
+        except KeyError:  # When living space does not exist
             print("Living space with such name does not exist\n")
 
-        try:
+        try:  # When office does not exist
             room_requested = self.andela_dojo['office_spaces'][arg]
 
             print('Staff in office space: {}'.format(arg))
             print('----------------------------------------')
-            if len(room_requested.occupants['Staff']) > 0:
+            if len(room_requested.occupants['Staff']) > 0:  # If room has staff
                 for Staff in room_requested.occupants['Staff'].values():
                     print(Staff.name)
                 print('\n')
-            else:
+
+            else:  # If room has no staff
                 print('None\n')
+
             print('Fellows in office space: {}'.format(arg))
-            if len(room_requested.occupants['Staff']) > 0:
+
+            if len(room_requested.occupants['Fellows']) > 0:
                 for Fellows in room_requested.occupants['Fellows'].values():
                     print(Fellows.name)
                 print('\n')
             else:
                 print('None\n')
 
-        except KeyError:
+        except KeyError:  # When office does not exist
             print("Office space with such name does not exist\n")
 
+    # Prints room allocations to screen or file.
     @docopt_cmd
     def do_print_allocations(self, arg):
         """Usage: print_allocations [<output>]"""
@@ -201,24 +205,33 @@ class InteractiveRoomAllocator(cmd.Cmd):
         living_spaces = self.andela_dojo['living_spaces']
         office_spaces = self.andela_dojo['office_spaces']
 
-        if arg['<output>'] == 'Y':
+        try:  # When an output file is desired
 
-            output = open("E:\have_allocations.txt", "w+")
-        else:
+            if arg['<output>'].lower() == 'y':
 
+                output = open("E:\have_allocations.txt", "w+")
+            else:
+
+                output = None
+
+        except (KeyError, AttributeError):
             output = None
 
+        # Go through each living space in the andela dojo
         for living_space in living_spaces.values():
             print('Fellows in living space: {}'.format(living_space.name), file=output, flush=True)
             print('----------------------------------------', file=output, flush=True)
 
+            # Print the name of each occupant if the room is not empty
             if len(living_space.occupants.values()) > 0:
                 for Fellows in living_space.occupants.values():
                     print(Fellows.name + ', ', file=output, flush=True)
                 print('\n', file=output, flush=True)
-            else:
+
+            else: # When room is empty
                 print('None\n', file=output, flush=True)
 
+        # Go through each office space in the andela dojo
         for office_space in office_spaces.values():
 
             print('Occupants of office space: {}'.format(office_space.name), file=output, flush=True)
@@ -236,11 +249,12 @@ class InteractiveRoomAllocator(cmd.Cmd):
             else:
                 print('No Staff', file=output, flush=True)
 
-            if arg == 'Y':
+        if output is not None:  # Hahahahaha
 
-                output.close()
-        return None
+            output.close()
+        return None  # For testing purposes
 
+    # Works the same as print_allocation, same comments apply.
     @docopt_cmd
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [<output>] """
@@ -248,9 +262,15 @@ class InteractiveRoomAllocator(cmd.Cmd):
         unallocated_office_space = self.andela_dojo['unallocated']['Office']
         unallocated_living_space = self.andela_dojo['unallocated']['Living_Space']
 
-        if arg['<output>'] == 'Y':
-            output = open("E:\have_no_allocations.txt", "w+")
-        else:
+        try:
+
+            if arg['<output>'].lower() == 'y':
+
+                output = open("E:\have_no_allocations.txt", "w+")
+            else:
+
+                output = None
+        except (KeyError, AttributeError):
             output = None
 
         print('\nPersons with unallocated living space:', file=output, flush=True)
@@ -275,15 +295,20 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         return None
 
-
+    # Loads interactive state from the database
     @docopt_cmd
     def do_load_state(self, arg):
         """Usage: load_state [<output>] """
+
+        # Create an engine to link to the database
         engine = create_engine('sqlite:///interactive_status.db', echo=False)
+
+        # Create a session
         Session = sessionmaker(bind=engine)
 
         session = Session()
 
+        # Try/Except block to determine if session has been specified, defaults to 'default'.
         try:
             state = arg['<output>'].lower()
 
@@ -294,32 +319,38 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             requested_state = pickle.loads(back.state_file)
 
+        # Reload the interactive session with retrieved object as self.andela_dojo
         InteractiveRoomAllocator(requested_state).cmdloop()
 
+    # Save interactive state to database
     @docopt_cmd
     def do_save_state(self, arg):
         """Usage: load_state [<output>] """
+        # Open a file to store the dojo object.
         with open("status.pickle", "wb") as status:
-            pickle.dump(self.andela_dojo, status, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(self.andela_dojo, status, protocol=pickle.HIGHEST_PROTOCOL)  # Write the current object to it.
 
+        # Convert the file into a binary object.
         with open("status.pickle", 'rb') as status_file:
             status_bin = status_file.read()
 
+        # Create engine to talk to database
         status_engine = create_engine('sqlite:///interactive_status.db', echo=False)
         Base = declarative_base()
         Base.metadata.create_all(status_engine)
 
-        try:
-            saved_state = State(state_name=arg['<output>'].lower(), state_file=status_bin)
+        try:  # Try if session name is provided
+            saved_state = State(state_name=arg['<output>'].lower(), state_file=status_bin)  # Create entry in table
 
         except (KeyError, AttributeError):
-            saved_state = State(state_name='default', state_file=status_bin)
+            saved_state = State(state_name='default', state_file=status_bin)  # Create entry in table
 
+        # Create session to talk to database
         some_session = sessionmaker(bind=status_engine)
         session = some_session()
 
-        session.add(saved_state)
-        session.commit()
+        session.add(saved_state)  # Add session
+        session.commit()  # Commit session
 
 
 if __name__ == '__main__':
