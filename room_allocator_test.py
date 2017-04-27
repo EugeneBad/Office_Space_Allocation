@@ -160,7 +160,7 @@ class SaveStateTest(unittest.TestCase):
 
     def test_data_saved_by_save_state(self):
 
-        self.interactive_session.do_save_state.__wrapped__(self.interactive_session)
+        self.interactive_session.do_save_state.__wrapped__(self.interactive_session, {})
 
         engine = create_engine('sqlite:///interactive_status.db', echo=False)
         Session = sessionmaker(bind=engine)
@@ -170,4 +170,11 @@ class SaveStateTest(unittest.TestCase):
         for back in session.query(State).filter(State.state_name == 'learn'):
 
             requested_state = pickle.loads(back.state_file)
-            
+
+        self.assertTrue(isinstance(requested_state, Dojo), msg='save_state does not save the dojo object ')
+
+
+class PrintUnallocatedTest(unittest.TestCase):
+    def setUp(self):
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
+
