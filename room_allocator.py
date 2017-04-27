@@ -269,6 +269,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
     def do_load_state(self, arg):
         """Usage load_state [<output>] """
         engine = create_engine('sqlite:///interactive_status.db', echo=False)
+        Session = sessionmaker(bind=engine)
+
+        session = Session()
+
+        
 
     def do_save_state(self, arg):
         """Usage: load_state [<output>] """
