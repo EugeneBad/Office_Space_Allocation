@@ -147,3 +147,15 @@ class AddPersonTest(unittest.TestCase):
             self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0]].occupants['Fellows'][
                 arg_person['<person_name>']], Fellow),
             msg='add_person command must create Fellow and assign them an office and living room if they wish.')
+
+
+class SaveStateTest(unittest.TestCase):
+    def setUp(self):
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
+
+    def test_data_saved_by_save_state(self):
+
+        self.interactive_session.do_save_state.__wrapped__(self.interactive_session)
+        
+
+
