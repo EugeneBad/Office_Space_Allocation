@@ -264,7 +264,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
     def do_load_save_state(self, arg):
         """Usage: load_state """
-                
+        with open("status.pickle", "wb") as status:
+            pass
 
 
 if __name__ == '__main__':
