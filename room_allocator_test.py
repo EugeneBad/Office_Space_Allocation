@@ -185,3 +185,6 @@ class PrintAllocatedTest(unittest.TestCase):
     def setUp(self):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
+    def test_print_allocated(self):
+        self.assertTrue(self.interactive_session.do_print_allocations.__wrapped__(self.interactive_session, {}) is None,
+                        msg='print_allocations command is malfunctioningl')
