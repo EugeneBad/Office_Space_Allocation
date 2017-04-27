@@ -262,8 +262,12 @@ class InteractiveRoomAllocator(cmd.Cmd):
         else:
             print('None\n', file=output, flush=True)
 
-    def do_load_save_state(self, arg):
-        """Usage: load_state """
+    def do_load_state(self, arg):
+        """Usage load_state [<output>] """
+        pass
+
+    def do_save_state(self, arg):
+        """Usage: load_state [<output>]"""
         with open("status.pickle", "wb") as status:
             pickle.dump(self.andela_dojo(), status, protocol=pickle.HIGHEST_PROTOCOL)
 
