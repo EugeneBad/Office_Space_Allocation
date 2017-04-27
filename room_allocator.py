@@ -28,7 +28,7 @@ from sqlalchemy.orm import sessionmaker
 # Main class called to maintain interactive session
 class InteractiveRoomAllocator(cmd.Cmd):
     intro = "\n\n>>>>>>>>>>>>>>>>>>>Eugene's random room allocator for Andela<<<<<<<<<<<<<<<<<<<<\n"
-    prompt = "Room_Allocator: "
+    prompt = "\nRoom_Allocator: "
     file = None
 
     # Class takes in a Dojo object to work with
@@ -234,7 +234,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         # Go through each office space in the andela dojo
         for office_space in office_spaces.values():
 
-            print('Occupants of office space: {}'.format(office_space.name), file=output, flush=True)
+            print('\nOccupants of office space: {}'.format(office_space.name), file=output, flush=True)
             print('----------------------------------------', file=output, flush=True)
 
             if len(office_space.occupants['Fellows'].values()) > 0:
