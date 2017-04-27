@@ -163,4 +163,6 @@ class SaveStateTest(unittest.TestCase):
         self.interactive_session.do_save_state.__wrapped__(self.interactive_session)
 
         engine = create_engine('sqlite:///interactive_status.db', echo=False)
-     
+        Session = sessionmaker(bind=engine)
+
+        session = Session()
