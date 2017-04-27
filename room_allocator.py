@@ -278,7 +278,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         with open("status.pickle", 'rb') as status_file:
             status_bin = status_file.read()
 
-        status_engine = create_engine('sqlite:///:memory:', echo=False)
+        status_engine = create_engine('sqlite:///interactive_status.db', echo=False)
         Base = declarative_base()
         Base.metadata.create_all(status_engine)
 
@@ -288,7 +288,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         session = some_session()
 
         session.add(saved_state)
-
+        session.commit()
 
 
 if __name__ == '__main__':
