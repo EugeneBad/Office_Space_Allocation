@@ -9,7 +9,6 @@ from room_allocator import InteractiveRoomAllocator
 import unittest
 from cmd import Cmd
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from status import State
 from sqlalchemy.orm import sessionmaker
 import pickle
