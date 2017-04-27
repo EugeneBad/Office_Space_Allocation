@@ -8,14 +8,17 @@ Usage:
 import cmd
 from docopt import docopt
 import sys
+from docopt_decorator import docopt_cmd
+# Class importations
 from DOJO.dojo import Dojo
 from FELLOW.fellow import Fellow
 from LIVINGSPACE.livingspace import LivingSpace
 from OFFICE.office import Office
 from STAFF.staff import Staff
-import pickle
-from docopt_decorator import docopt_cmd
+
 import random
+# Importations for database
+import pickle
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from status import State
@@ -127,6 +130,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
                 random_office.occupants['Fellows'][arg['<person_name>']] = Fellow(arg['<person_name>'], 'Y')
+                print('{} has been given living space: {}'.format(arg['<person_name>'], random_office.name))
 
         # If fellow does not want accommodation:
         if arg['<Fellow_or_Staff>'] == 'Fellow' and arg['<wants_accommodation>'] != 'Y':
@@ -190,6 +194,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         except KeyError:
             print("Office space with such name does not exist\n")
 
+    @docopt_cmd
     def do_print_allocations(self, arg):
         """Usage: print_allocations [<output>]"""
 
@@ -234,7 +239,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
             if arg == 'Y':
 
                 output.close()
+        return None
 
+    @docopt_cmd
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [<output>] """
 
@@ -266,8 +273,12 @@ class InteractiveRoomAllocator(cmd.Cmd):
         else:
             print('None\n', file=output, flush=True)
 
+        return None
+
+
+    @docopt_cmd
     def do_load_state(self, arg):
-        """Usage load_state [<output>] """
+        """Usage: load_state [<output>] """
         engine = create_engine('sqlite:///interactive_status.db', echo=False)
         Session = sessionmaker(bind=engine)
 
@@ -279,6 +290,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         InteractiveRoomAllocator(requested_state).cmdloop()
 
+    @docopt_cmd
     def do_save_state(self, arg):
         """Usage: load_state [<output>] """
         with open("status.pickle", "wb") as status:

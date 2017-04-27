@@ -178,7 +178,7 @@ class PrintUnallocatedTest(unittest.TestCase):
 
     def test_print_unallocated(self):
         self.assertTrue(self.interactive_session.do_print_unallocated.__wrapped__(self.interactive_session, {}) is None,
-                        msg='print_unallocated command is malfunctioningl')
+                        msg='print_unallocated command is malfunctioning')
 
 
 class PrintAllocatedTest(unittest.TestCase):
@@ -187,4 +187,4 @@ class PrintAllocatedTest(unittest.TestCase):
 
     def test_print_allocated(self):
         self.assertTrue(self.interactive_session.do_print_allocations.__wrapped__(self.interactive_session, {}) is None,
-                        msg='print_allocations command is malfunctioningl')
+                        msg='print_allocations command is malfunctioning')
