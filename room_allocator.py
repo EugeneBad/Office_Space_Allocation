@@ -18,6 +18,7 @@ from docopt_decorator import docopt_cmd
 import random
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from status import State
 
 
 class InteractiveRoomAllocator(cmd.Cmd):
@@ -279,7 +280,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
         status_engine = create_engine('sqlite:///:memory:', echo=False)
         Base = declarative_base()
         Base.metadata.create_all(status_engine)
-        
+
+        saved_state = State(state_name='learn', state_file=status_bin)
+
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
