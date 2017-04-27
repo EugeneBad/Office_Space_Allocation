@@ -19,6 +19,7 @@ import random
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from status import State
+from sqlalchemy.orm import sessionmaker
 
 
 class InteractiveRoomAllocator(cmd.Cmd):
@@ -283,6 +284,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         saved_state = State(state_name='learn', state_file=status_bin)
 
+        Session = sessionmaker(bind=status_engine)
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
