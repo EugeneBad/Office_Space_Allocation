@@ -12,7 +12,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from status import State
 from sqlalchemy.orm import sessionmaker
-
+import pickle
 
 class CreateRoomTest(unittest.TestCase):
     def setUp(self):
@@ -166,3 +166,8 @@ class SaveStateTest(unittest.TestCase):
         Session = sessionmaker(bind=engine)
 
         session = Session()
+
+        for back in session.query(State).filter(State.state_name == 'learn'):
+
+            requested_state = pickle.loads(back.state_file)
+            
