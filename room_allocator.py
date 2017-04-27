@@ -275,7 +275,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         for back in session.query(State).filter(State.state_name == 'learn'):
 
-            print(pickle.loads(back.state_file))
+            requested_state = pickle.loads(back.state_file)
+
+        
 
     def do_save_state(self, arg):
         """Usage: load_state [<output>] """
