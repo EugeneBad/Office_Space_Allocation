@@ -8,6 +8,10 @@ from ROOM.room import Room
 from room_allocator import InteractiveRoomAllocator
 import unittest
 from cmd import Cmd
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from status import State
+from sqlalchemy.orm import sessionmaker
 
 
 class CreateRoomTest(unittest.TestCase):
@@ -158,5 +162,5 @@ class SaveStateTest(unittest.TestCase):
 
         self.interactive_session.do_save_state.__wrapped__(self.interactive_session)
 
-
-
+        engine = create_engine('sqlite:///interactive_status.db', echo=False)
+     
