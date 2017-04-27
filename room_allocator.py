@@ -271,6 +271,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
         with open("status.pickle", "wb") as status:
             pickle.dump(self.andela_dojo(), status, protocol=pickle.HIGHEST_PROTOCOL)
 
+        with open("status.pickle", 'rb') as status_file:
+            status_bin = status_file.read()
+
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
