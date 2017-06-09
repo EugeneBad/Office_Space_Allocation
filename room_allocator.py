@@ -357,7 +357,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
     @docopt_cmd
     def do_load_people(self, arg):
         """Usage: load_people"""
-        
+
+        # Open the file to be loaded using a 'with' statement to ensure file is automatically closed.
+        with open("load_file.txt", 'r') as file:
+
+            
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
