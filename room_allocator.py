@@ -368,8 +368,20 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 person_first_name = person_details[0]
                 person_last_name = person_details[1]
                 person_type = person_details[2]
-
                 
+                # Call the do_add_person method to add each person in the file.
+                try:
+                    person_accommodation = person_details[3]
+
+                    self.do_add_person.__wrapped__(self, {'<first_name>': person_first_name,
+                                                          '<last_name>': person_last_name,
+                                                          '<Fellow_or_Staff>': person_type,
+                                                          '<wants_accommodation>': person_accommodation})
+                except IndexError:
+
+                    self.do_add_person({'<first_name>': person_first_name,
+                                        '<last_name>': person_last_name,
+                                        '<Fellow_or_Staff>': person_type})
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
