@@ -361,7 +361,15 @@ class InteractiveRoomAllocator(cmd.Cmd):
         # Open the file to be loaded using a 'with' statement to ensure file is automatically closed.
         with open("load_file.txt", 'r') as file:
 
-            
+            # Read the file line by line extracting out details of person to be added.
+            for line in file:
+
+                person_details = line.rstrip().split(' ')
+                person_first_name = person_details[0]
+                person_last_name = person_details[1]
+                person_type = person_details[2]
+
+                
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
