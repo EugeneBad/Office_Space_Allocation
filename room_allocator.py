@@ -368,7 +368,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 person_first_name = person_details[0]
                 person_last_name = person_details[1]
                 person_type = person_details[2]
-                
+
                 # Call the do_add_person method to add each person in the file.
                 try:
                     person_accommodation = person_details[3]
@@ -382,6 +382,14 @@ class InteractiveRoomAllocator(cmd.Cmd):
                     self.do_add_person({'<first_name>': person_first_name,
                                         '<last_name>': person_last_name,
                                         '<Fellow_or_Staff>': person_type})
+
+
+    @docopt_cmd
+    def do_reallocate_person(self, arg):
+        """Usage: reallocate_person <person_identifier> <new_room_name>"""
+
+        
+
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
