@@ -46,13 +46,12 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             #  Add it as a value to the office_spaces dictionary in andela_dojo.
             for each_office in arg['<room_name>']:
-
                 self.andela_dojo['office_spaces'][each_office] = Office(each_office)
 
                 print('An office called {} has been successfully created!'.format(arg['<room_name>'][counter]))
                 counter += 1
 
-        #  Check if room is a living space.
+        # Check if room is a living space.
         if arg['<room_type>'].lower() == 'living':
 
             #  Add it as a value to the living_spaces dictionary in andela_dojo.
@@ -79,7 +78,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         office_list = [office for office in self.andela_dojo['office_spaces'].values() if not len(office.occupants) > 6]
 
         if len(office_list) > 0:
-            random_office_index = random.randint(0, len(office_list)-1)
+            random_office_index = random.randint(0, len(office_list) - 1)
             random_office = office_list[random_office_index]
 
         if len(office_list) == 0:
@@ -87,10 +86,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         # Randomly select a living space from the living_spaces dictionary in andela_dojo,
         # store it in random_living_space variable
-        living_space_list = [living_space for living_space in self.andela_dojo['living_spaces'].values() if not len(living_space.occupants) > 4]
+        living_space_list = [living_space for living_space in self.andela_dojo['living_spaces'].values() if
+                             not len(living_space.occupants) > 4]
 
         if len(living_space_list) > 0:
-            random_living_space_index = random.randint(0, len(living_space_list)-1)
+            random_living_space_index = random.randint(0, len(living_space_list) - 1)
             random_living_space = living_space_list[random_living_space_index]
 
         if len(living_space_list) == 0:
@@ -124,11 +124,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 self.andela_dojo['unallocated']['Living_Space'][person_name] = Fellow(person_name, 'Y')
                 print('\n\tFellow {} has unallocated Living Space'.format(person_name))
 
-            if random_office is None: # If office space is not available
+            if random_office is None:  # If office space is not available
                 self.andela_dojo['unallocated']['Office'][person_name] = Fellow(person_name, 'Y')
                 print('\n\tFellow {} has unallocated Office Space'.format(person_name))
 
-            if random_office is not None: # If office space is  available
+            if random_office is not None:  # If office space is  available
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
                 random_office.occupants['Fellows'][person_name] = Fellow(person_name, 'Y')
@@ -165,7 +165,6 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             if len(room_requested.occupants) > 0:  # If room has people in it
                 for Fellows in room_requested.occupants.values():
-
                     print(Fellows.name)
                 print('\n')
             else:  # If room is empty
@@ -230,7 +229,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                     print(Fellows.name, end=', ', file=output, flush=True)
                 print('\n', file=output, flush=True)
 
-            else: # When room is empty
+            else:  # When room is empty
                 print('None\n', file=output, flush=True)
 
         # Go through each office space in the andela dojo
@@ -318,7 +317,6 @@ class InteractiveRoomAllocator(cmd.Cmd):
             state = 'default'
 
         for back in session.query(State).filter(State.state_name == state):
-
             requested_state = pickle.loads(back.state_file)
 
         # Reload the interactive session with retrieved object as self.andela_dojo
@@ -355,6 +353,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
         session.add(saved_state)  # Add session
         session.commit()  # Commit session
         print('\n\tSave complete')
+
+    @docopt_cmd
+    def do_load_people(self, arg):
+        """Usage: load_people"""
+        
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
