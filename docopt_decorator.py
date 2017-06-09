@@ -2,7 +2,7 @@ from docopt import docopt, DocoptExit
 from functools import wraps
 
 
-def docopt_cmd(func):
+def docopt_cmd(func): # pragma: no cover
     """
     This decorator is used to simplify the try/except block and pass the result
     of the docopt parsing to the called action.

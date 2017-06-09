@@ -154,6 +154,22 @@ class AddPersonTest(unittest.TestCase):
             self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0].lower()].occupants['Fellows'][person_name.lower()], Fellow),
             msg='add_person command must create Fellow and assign them an office and living room if they wish.')
 
+    def test_fellow_is_allocated_office_if_living_space_not_desired(self):
+        arg_person = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow',
+                      '<wants_accommodation>': None}
+        person_name = 'Larry King'
+
+        arg_office = {'<room_type>': 'office', '<room_name>': ['Orange']}
+
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office)
+
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_person)
+
+        self.assertTrue(isinstance(
+            self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0].lower()].occupants[
+                'Fellows'][person_name.lower()], Fellow),
+            msg='add_person command must create Fellow and assign them an office and living room if they wish.')
+
 
 class SaveStateTest(unittest.TestCase):
     def setUp(self):
@@ -189,6 +205,8 @@ class PrintAllocatedTest(unittest.TestCase):
     def test_print_allocated(self):
         self.assertTrue(self.interactive_session.do_print_allocations.__wrapped__(self.interactive_session, {}) is None,
                         msg='print_allocations command is malfunctioning')
+
+
 
 
 if __name__ == '__main__':
