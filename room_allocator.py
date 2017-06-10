@@ -106,7 +106,6 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 for fellow in fellows_reallocated_living_spaces:
                     del self.andela_dojo['unallocated']['Living_Space'][fellow]
 
-
     # Function to implement the CLI command add_person.
     @docopt_cmd
     def do_add_person(self, arg):

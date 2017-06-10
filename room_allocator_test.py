@@ -126,7 +126,6 @@ class CreateRoomTest(unittest.TestCase):
                         msg='Reallocated person not removed from unallocated living_space')
 
 
-
 class AddPersonTest(unittest.TestCase):
     def setUp(self):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
@@ -205,8 +204,6 @@ class PrintRoomTest(unittest.TestCase):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
         self.original_print = sys.stdout
-
-
 
         arg_fellow = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow',
                       '<wants_accommodation>': 'Y'}
@@ -386,8 +383,6 @@ class LoadPeopleTest(unittest.TestCase):
 
         self.assertTrue(len(self.interactive_session.andela_dojo['unallocated']['Living_Space']) == 4,
                         msg='load_people failed to load people into living spaces')
-
-
 
 
 if __name__ == '__main__':
