@@ -223,7 +223,61 @@ class PrintRoomTest(unittest.TestCase):
 
         sys.stdout = self.original_print
 
-    
+    def test_print_for_office_allocations(self):
+        sys.stdout = StringIO()
+        self.test_print = sys.stdout
+
+        self.interactive_session.do_print_room.__wrapped__(self.interactive_session, 'orange')
+
+        output = "Living space with such name does not exist\n\n" \
+                 "Staff in office space: Orange\n" \
+                 "----------------------------------------\n" \
+                 "Jimmy kimmel\n\n\n" \
+                 "Fellows in office space: Orange\n" \
+                 "Larry king\n\n\n"
+        self.assertEqual(self.test_print.getvalue(), output)
+
+        sys.stdout = self.original_print
+
+
+class PrintAllocationsTest(unittest.TestCase):
+    def setUp(self):
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
+
+        self.original_print = sys.stdout
+
+        arg_fellow = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow',
+                      '<wants_accommodation>': 'Y'}
+
+        arg_staff = {'<first_name>': 'Jimmy', '<last_name>': 'Kimmel', '<Fellow_or_Staff>': 'staff',
+                     '<wants_accommodation>': None}
+
+        arg_office = {'<room_type>': 'office', '<room_name>': ['Orange']}
+        arg_living = {'<room_type>': 'living', '<room_name>': ['Black']}
+
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office)
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_living)
+
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_fellow)
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_staff)
+
+    def test_printed_allocations(self):
+        sys.stdout = StringIO()
+        test_print = sys.stdout
+
+        self.interactive_session.do_print_allocations.__wrapped__(self.interactive_session, {"<output>": None})
+        output = "Fellows in living space: Black\n" \
+                 "----------------------------------------\n" \
+                 "Larry king, \n\n\n" \
+                 "Occupants of office space: Orange\n" \
+                 "----------------------------------------\n" \
+                 "Larry king, Jimmy kimmel, \n\n"
+        self.assertEqual(test_print.getvalue(), output)
+        sys.stdout = self.original_print
+
+
+
+
 
 
 class SaveStateTest(unittest.TestCase):
