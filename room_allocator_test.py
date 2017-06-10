@@ -177,6 +177,10 @@ class PrintRoomTest(unittest.TestCase):
     def setUp(self):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
+        self.original_print = sys.stdout
+
+
+
         arg_fellow = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow',
                       '<wants_accommodation>': 'Y'}
 
@@ -194,10 +198,8 @@ class PrintRoomTest(unittest.TestCase):
 
     def test_print_room_prints_room_occupants(self):
 
-        original_print = sys.stdout
-
         sys.stdout = StringIO()
-        test_print = sys.stdout
+        self.test_print = sys.stdout
 
         self.interactive_session.do_print_room.__wrapped__(self.interactive_session, 'black')
 
@@ -206,8 +208,22 @@ class PrintRoomTest(unittest.TestCase):
                  "Larry king\n\n\n" \
                  "Office space with such name does not exist\n\n"
 
-        self.assertEqual(test_print.getvalue(), output, msg='Print room not printing correct information')
-        sys.stdout = original_print
+        self.assertEqual(self.test_print.getvalue(), output, msg='Print room not printing correct information')
+        sys.stdout = self.original_print
+
+    def test_print_for_non_existent_room(self):
+
+        sys.stdout = StringIO()
+        self.test_print = sys.stdout
+
+        self.interactive_session.do_print_room.__wrapped__(self.interactive_session, 'blue')
+
+        output = "Living space with such name does not exist\n\nOffice space with such name does not exist\n\n"
+        self.assertEqual(self.test_print.getvalue(), output)
+
+        sys.stdout = self.original_print
+
+    
 
 
 class SaveStateTest(unittest.TestCase):
