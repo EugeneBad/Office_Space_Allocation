@@ -303,9 +303,6 @@ class PrintUnallocatedTest(unittest.TestCase):
         self.arg_fellow = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow',
                       '<wants_accommodation>': 'Y'}
 
-        self.arg_staff = {'<first_name>': 'Jimmy', '<last_name>': 'Kimmel', '<Fellow_or_Staff>': 'staff',
-                     '<wants_accommodation>': None}
-
     def test_print_unallocated_living_space(self):
 
         self.interactive_session.do_add_person.__wrapped__(self.interactive_session, self.arg_fellow)
@@ -324,6 +321,34 @@ class PrintUnallocatedTest(unittest.TestCase):
 
         self.assertEqual(test_print.getvalue(), output, msg='print_unallocated command is malfunctioning')
         sys.stdout = self.original_print
+
+
+class LoadStateTest(unittest.TestCase):
+    def setUp(self):
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
+
+        arg_office = {'<room_type>': 'office', '<room_name>': ['Orange']}
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office)
+        self.interactive_session.do_save_state.__wrapped__(self.interactive_session, {'<output>': 'test_run'})
+
+    def test_load_state(self):
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['office_spaces']) == 1,
+                        msg='Object has not been saved before resetting')
+
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['office_spaces']) == 0,
+                        msg='Object has not been reset')
+        
+        self.interactive_session.do_load_state.__wrapped__(self.interactive_session, {'<output>': 'test_run'})
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['office_spaces']) == 1,
+                        msg='Object not reloaded after being reset')
+
+
+
+
 
 
 

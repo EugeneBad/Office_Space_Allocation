@@ -148,6 +148,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 self.andela_dojo['unallocated']['Office'][person_name.lower()] = Fellow(person_name.lower(), 'N')
                 print('\n\tFellow {} has unallocated Office Space'.format(person_name))
 
+
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
@@ -323,7 +324,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         # Reload the interactive session with retrieved object as self.andela_dojo
         print('Exiting........')
-        InteractiveRoomAllocator(requested_state).cmdloop()
+
+        self.andela_dojo = requested_state
 
     # Save interactive state to database
     @docopt_cmd

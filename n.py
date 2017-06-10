@@ -1,13 +1,13 @@
-import sys
-from io import StringIO
+class A:
+    def __init__(self):
+        self.p = 2
 
-original_print = sys.stdout
+    def x(self):
+        A.m(self)
 
-sys.stdout = StringIO()
-y = sys.stdout
+    def m(self):
+        print('Tea')
 
-print('Yea')
-print('U know')
-
-sys.stdout = original_print
-print(y.getvalue())
+t = A()
+print(t.p)
+t.x()
