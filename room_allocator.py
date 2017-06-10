@@ -75,7 +75,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         # Randomly select an office from the office_spaces dictionary in andela_dojo,
         # store it in random_office variable
-        office_list = [office for office in self.andela_dojo['office_spaces'].values() if not len(office.occupants) > 6]
+        office_list = [office for office in self.andela_dojo['office_spaces'].values()
+                       if not (len(office.occupants['Staff']) + len(office.occupants['Fellows'])) > 6]
 
         if len(office_list) > 0:
             random_office_index = random.randint(0, len(office_list) - 1)
