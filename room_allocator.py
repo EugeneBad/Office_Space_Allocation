@@ -148,7 +148,6 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 self.andela_dojo['unallocated']['Office'][person_name.lower()] = Fellow(person_name.lower(), 'N')
                 print('\n\tFellow {} has unallocated Office Space'.format(person_name))
 
-
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
@@ -369,6 +368,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
             for line in file:
 
                 person_details = line.rstrip().split(' ')
+
                 person_first_name = person_details[0]
                 person_last_name = person_details[1]
                 person_type = person_details[2]
@@ -383,9 +383,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
                                                           '<wants_accommodation>': person_accommodation})
                 except IndexError:
 
-                    self.do_add_person({'<first_name>': person_first_name,
-                                        '<last_name>': person_last_name,
-                                        '<Fellow_or_Staff>': person_type})
+                    self.do_add_person.__wrapped__(self, {'<first_name>': person_first_name,
+                                                          '<last_name>': person_last_name,
+                                                          '<Fellow_or_Staff>': person_type,
+                                                          '<wants_accommodation>': None})
+
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])

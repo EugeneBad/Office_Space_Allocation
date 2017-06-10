@@ -347,9 +347,18 @@ class LoadStateTest(unittest.TestCase):
                         msg='Object not reloaded after being reset')
 
 
+class LoadPeopleTest(unittest.TestCase):
+    def setUp(self):
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
 
+    def test_load_people(self):
+        self.interactive_session.do_load_people.__wrapped__(self.interactive_session, {})
 
+        self.assertTrue(len(self.interactive_session.andela_dojo['unallocated']['Office']) == 7,
+                        msg='load_people failed to load people into offices')
 
+        self.assertTrue(len(self.interactive_session.andela_dojo['unallocated']['Living_Space']) == 4,
+                        msg='load_people failed to load people into living spaces')
 
 
 
