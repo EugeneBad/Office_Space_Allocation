@@ -99,6 +99,31 @@ class CreateRoomTest(unittest.TestCase):
             isinstance(self.interactive_session.andela_dojo['living_spaces'][arg['<room_name>'][2].lower()], LivingSpace),
             msg='create_room command must be able to create several LivingSpaces at once')
 
+    def test_create_room_reallocates_unallocated_people(self):
+        arg_office = {'<room_type>': 'office', '<room_name>': ['Cream']}
+        arg_living = {'<room_type>': 'living', '<room_name>': ['Green']}
+
+        arg_fellow = {'<first_name>': 'Aretha', '<last_name>': 'Franklin', '<Fellow_or_Staff>': 'felLOW', '<wants_accommodation>': 'Y'}
+
+        arg_staff = {'<first_name>': 'Ella', '<last_name>': 'Fitz', '<Fellow_or_Staff>': 'Staff', '<wants_accommodation>': None}
+
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_fellow)
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_staff)
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['unallocated']['Office']) == 2,
+                        msg='Added person not unallocated office before room is created')
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['unallocated']['Living_Space']) == 1,
+                        msg='Added person not unallocated living space before room is created')
+
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office)
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_living)
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['unallocated']['Office']) == 0,
+                        msg='Reallocated person not removed from unallocated office')
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['unallocated']['Living_Space']) == 0,
+                        msg='Reallocated person not removed from unallocated living_space')
 
 
 
