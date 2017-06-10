@@ -1,13 +1,15 @@
-class A:
-    def __init__(self):
-        self.p = 2
+my_list = {'a':3, 'b':1, 'c':6, 'd':4, 'e':0}
 
-    def x(self):
-        A.m(self)
+numba = len(my_list)
+allocated_offices = []
 
-    def m(self):
-        print('Tea')
+for no in my_list.keys():
+    if numba > 3:
+        print(my_list[no])
 
-t = A()
-print(t.p)
-t.x()
+        allocated_offices.append(no)
+        print(my_list)
+
+for key in allocated_offices:
+    del my_list[key]
+print(my_list)

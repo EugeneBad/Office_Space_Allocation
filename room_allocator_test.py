@@ -100,6 +100,8 @@ class CreateRoomTest(unittest.TestCase):
             msg='create_room command must be able to create several LivingSpaces at once')
 
 
+
+
 class AddPersonTest(unittest.TestCase):
     def setUp(self):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
@@ -201,7 +203,7 @@ class PrintRoomTest(unittest.TestCase):
         sys.stdout = StringIO()
         self.test_print = sys.stdout
 
-        self.interactive_session.do_print_room.__wrapped__(self.interactive_session, 'black')
+        self.interactive_session.do_print_room.__wrapped__(self.interactive_session, {'<room_name>':'black'})
 
         output = "Fellows in living space: Black\n" \
                  "----------------------------------------\n" \
@@ -216,7 +218,7 @@ class PrintRoomTest(unittest.TestCase):
         sys.stdout = StringIO()
         self.test_print = sys.stdout
 
-        self.interactive_session.do_print_room.__wrapped__(self.interactive_session, 'blue')
+        self.interactive_session.do_print_room.__wrapped__(self.interactive_session, {'<room_name>':'blue'})
 
         output = "Living space with such name does not exist\n\nOffice space with such name does not exist\n\n"
         self.assertEqual(self.test_print.getvalue(), output, msg="Print_room does not give correct output for non-existent rooms")
@@ -227,7 +229,7 @@ class PrintRoomTest(unittest.TestCase):
         sys.stdout = StringIO()
         self.test_print = sys.stdout
 
-        self.interactive_session.do_print_room.__wrapped__(self.interactive_session, 'orange')
+        self.interactive_session.do_print_room.__wrapped__(self.interactive_session, {'<room_name>':'orange'})
 
         output = "Living space with such name does not exist\n\n" \
                  "Staff in office space: Orange\n" \
