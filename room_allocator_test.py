@@ -208,7 +208,7 @@ class PrintRoomTest(unittest.TestCase):
                  "Larry king\n\n\n" \
                  "Office space with such name does not exist\n\n"
 
-        self.assertEqual(self.test_print.getvalue(), output, msg='Print room not printing correct information')
+        self.assertEqual(self.test_print.getvalue(), output, msg='Print_room not printing correct information')
         sys.stdout = self.original_print
 
     def test_print_for_non_existent_room(self):
@@ -219,7 +219,7 @@ class PrintRoomTest(unittest.TestCase):
         self.interactive_session.do_print_room.__wrapped__(self.interactive_session, 'blue')
 
         output = "Living space with such name does not exist\n\nOffice space with such name does not exist\n\n"
-        self.assertEqual(self.test_print.getvalue(), output)
+        self.assertEqual(self.test_print.getvalue(), output, msg="Print_room does not give correct output for non-existent rooms")
 
         sys.stdout = self.original_print
 
@@ -235,7 +235,7 @@ class PrintRoomTest(unittest.TestCase):
                  "Jimmy kimmel\n\n\n" \
                  "Fellows in office space: Orange\n" \
                  "Larry king\n\n\n"
-        self.assertEqual(self.test_print.getvalue(), output)
+        self.assertEqual(self.test_print.getvalue(), output, msg="Print_room does not give correct output for offices")
 
         sys.stdout = self.original_print
 
@@ -272,12 +272,8 @@ class PrintAllocationsTest(unittest.TestCase):
                  "Occupants of office space: Orange\n" \
                  "----------------------------------------\n" \
                  "Larry king, Jimmy kimmel, \n\n"
-        self.assertEqual(test_print.getvalue(), output)
+        self.assertEqual(test_print.getvalue(), output, msg="Print_allocations gives incorrect output")
         sys.stdout = self.original_print
-
-
-
-
 
 
 class SaveStateTest(unittest.TestCase):
@@ -302,18 +298,33 @@ class PrintUnallocatedTest(unittest.TestCase):
     def setUp(self):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
-    def test_print_unallocated(self):
-        self.assertTrue(self.interactive_session.do_print_unallocated.__wrapped__(self.interactive_session, {}) is None,
-                        msg='print_unallocated command is malfunctioning')
+        self.original_print = sys.stdout
 
+        self.arg_fellow = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow',
+                      '<wants_accommodation>': 'Y'}
 
-class PrintAllocatedTest(unittest.TestCase):
-    def setUp(self):
-        self.interactive_session = InteractiveRoomAllocator(Dojo())
+        self.arg_staff = {'<first_name>': 'Jimmy', '<last_name>': 'Kimmel', '<Fellow_or_Staff>': 'staff',
+                     '<wants_accommodation>': None}
 
-    def test_print_allocated(self):
-        self.assertTrue(self.interactive_session.do_print_allocations.__wrapped__(self.interactive_session, {}) is None,
-                        msg='print_allocations command is malfunctioning')
+    def test_print_unallocated_living_space(self):
+
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, self.arg_fellow)
+
+        sys.stdout = StringIO()
+        test_print = sys.stdout
+
+        self.interactive_session.do_print_unallocated.__wrapped__(self.interactive_session, {'<output>': None})
+
+        output = "\nPersons with unallocated living space:\n" \
+                 "----------------------------------------\n" \
+                 "Larry king, \n\n" \
+                 "\nPersons with unallocated office space:\n" \
+                 "----------------------------------------\n" \
+                 "Larry king, \n\n"
+
+        self.assertEqual(test_print.getvalue(), output, msg='print_unallocated command is malfunctioning')
+        sys.stdout = self.original_print
+
 
 
 

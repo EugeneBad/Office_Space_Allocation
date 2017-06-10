@@ -269,7 +269,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             if arg['<output>'].lower() == 'y':
 
-                output = open("E:\have_no_allocations.txt", "w+")
+                output = open("have_no_allocations.txt", "w+")
             else:
 
                 output = None
