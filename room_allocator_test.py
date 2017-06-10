@@ -12,6 +12,8 @@ from sqlalchemy import create_engine
 from status import State
 from sqlalchemy.orm import sessionmaker
 import pickle
+import sys
+from io import StringIO
 
 
 class CreateRoomTest(unittest.TestCase):
@@ -169,6 +171,43 @@ class AddPersonTest(unittest.TestCase):
             self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0].lower()].occupants[
                 'Fellows'][person_name.lower()], Fellow),
             msg='add_person command must create Fellow and assign them an office and living room if they wish.')
+
+
+class PrintRoomTest(unittest.TestCase):
+    def setUp(self):
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
+
+        arg_fellow = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow',
+                      '<wants_accommodation>': 'Y'}
+
+        arg_staff = {'<first_name>': 'Jimmy', '<last_name>': 'Kimmel', '<Fellow_or_Staff>': 'staff',
+                     '<wants_accommodation>': None}
+
+        arg_office = {'<room_type>': 'office', '<room_name>': ['Orange']}
+        arg_living = {'<room_type>': 'living', '<room_name>': ['Black']}
+
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office)
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_living)
+
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_fellow)
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_staff)
+
+    def test_print_room_prints_room_occupants(self):
+
+        original_print = sys.stdout
+
+        sys.stdout = StringIO()
+        test_print = sys.stdout
+
+        self.interactive_session.do_print_room.__wrapped__(self.interactive_session, 'black')
+
+        output = "Fellows in living space: Black\n" \
+                 "----------------------------------------\n" \
+                 "Larry king\n\n\n" \
+                 "Office space with such name does not exist\n\n"
+
+        self.assertEqual(test_print.getvalue(), output, msg='Print room not printing correct information')
+        sys.stdout = original_print
 
 
 class SaveStateTest(unittest.TestCase):

@@ -154,6 +154,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         print('\n\t\t****************Good Bye****************')
         exit()
 
+    @docopt_cmd
     def do_print_room(self, arg):
         """Usage: print_room <room_name>"""
 
