@@ -496,7 +496,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 if person_name in office_space.occupants['Staff']:
 
                     # Check if requested room has space in it.
-                    if len(new_room.occupants) < 7:
+                    if len(new_room.occupants['Staff']) +  len(new_room.occupants['Fellows']) < 6:
                         new_room.occupants['Staff'][person_name] = office_space.occupants['Staff'][person_name]
 
                     del office_space.occupants['Staff'][person_name]
@@ -507,7 +507,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
                 elif person_name in office_space.occupants['Fellows']:
 
-                    if len(new_room.occupants) < 6:
+                    if len(new_room.occupants['Staff']) +  len(new_room.occupants['Fellows']) < 6:
                         new_room.occupants['Fellows'][person_name] = office_space.occupants['Fellows'][person_name]
 
                     del office_space.occupants['Fellows'][person_name]
@@ -518,7 +518,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                     break
         else:
             print('Invalid Room Name or Person ID.')
-            print('Use print_allocations command for help')
+            print('Use print_allocations command for guidance')
 
 
 if __name__ == '__main__':

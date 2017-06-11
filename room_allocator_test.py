@@ -385,5 +385,57 @@ class LoadPeopleTest(unittest.TestCase):
                         msg='load_people failed to load people into living spaces')
 
 
+class ReallocatePersonTest(unittest.TestCase):
+    def setUp(self):
+        self.interactive_session = InteractiveRoomAllocator(Dojo())
+
+        arg_fellow = {'<first_name>': 'Jimmy', '<last_name>': 'Kimmel', '<Fellow_or_Staff>': 'fellow',
+                      '<wants_accommodation>': 'Y'}
+
+        arg_staff = {'<first_name>': 'Larry', '<last_name>': 'kING', '<Fellow_or_Staff>': 'STAFF',
+                     '<wants_accommodation>': None}
+
+        arg_office_1 = {'<room_type>': 'office', '<room_name>': ['Brown']}
+        arg_office_2 = {'<room_type>': 'office', '<room_name>': ['Yellow']}
+
+        arg_living_space_1 = {'<room_type>': 'living', '<room_name>': ['White']}
+        arg_living_space_2 = {'<room_type>': 'living', '<room_name>': ['Red']}
+
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office_1)
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_living_space_1)
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_fellow)
+        self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_staff)
+
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office_2)
+        self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_living_space_2)
+
+    def test_reallocate_person(self):
+        self.interactive_session.do_reallocate_person.__wrapped__(self.interactive_session,
+                                                                  {'<person_identifier>': 'jimmy-kimmel',
+                                                                   '<new_room_name>': 'yellow'})
+
+        self.interactive_session.do_reallocate_person.__wrapped__(self.interactive_session,
+                                                                  {'<person_identifier>': 'larry-king',
+                                                                   '<new_room_name>': 'yellow'})
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['office_spaces']['brown'].occupants['Fellows']) == 0,
+                        msg='reallocate_person does not remove person from original office.')
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['office_spaces']['yellow'].occupants['Fellows']) == 1,
+                        msg='reallocate_person does not move fellow to new office.')
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['office_spaces']['yellow'].occupants['Staff']) == 1,
+                        msg='reallocate_person does not move staff to new office.')
+
+        self.interactive_session.do_reallocate_person.__wrapped__(self.interactive_session,
+                                                                  {'<person_identifier>': 'jimmy-kimmel',
+                                                                   '<new_room_name>': 'red'})
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['living_spaces']['white'].occupants) == 0,
+                        msg='reallocate_person does not remove person from original living space.')
+
+        self.assertTrue(len(self.interactive_session.andela_dojo['living_spaces']['red'].occupants) == 1,
+                        msg='reallocate_person does not move person to new living space.')
+
 if __name__ == '__main__':
     unittest.main()
