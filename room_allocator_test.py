@@ -154,7 +154,6 @@ class AddPersonTest(unittest.TestCase):
 
     def test_staff_is_allocated_office(self):
         arg_person = {'<first_name>': 'John', '<last_name>': 'Hopkins', '<Fellow_or_Staff>': 'Staff', '<wants_accommodation>': 'N'}
-        person_name = 'John Hopkins'
 
         arg_office = {'<room_type>': 'office', '<room_name>': ['Orange']}
 
@@ -163,12 +162,12 @@ class AddPersonTest(unittest.TestCase):
         self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_person)
 
         self.assertTrue(isinstance(
-            self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0].lower()].occupants['Staff'][person_name.lower()], Staff),
+            self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0].lower()].occupants['Staff']['jh0'], Staff),
             msg='add_person command must create Staff and assign them an office.')
 
     def test_fellow_is_allocted_office_and_living_space_when_desired(self):
-        arg_person = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow', '<wants_accommodation>': 'Y'}
-        person_name = 'Larry King'
+        arg_person = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow',
+                      '<wants_accommodation>': 'Y'}
 
         arg_office = {'<room_type>': 'office', '<room_name>': ['Orange']}
         arg_living = {'<room_type>': 'living', '<room_name>': ['Black']}
@@ -179,13 +178,12 @@ class AddPersonTest(unittest.TestCase):
         self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_person)
 
         self.assertTrue(isinstance(
-            self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0].lower()].occupants['Fellows'][person_name.lower()], Fellow),
+            self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0].lower()].occupants['Fellows']['lk0'], Fellow),
             msg='add_person command must create Fellow and assign them an office and living room if they wish.')
 
     def test_fellow_is_allocated_office_if_living_space_not_desired(self):
         arg_person = {'<first_name>': 'Larry', '<last_name>': 'King', '<Fellow_or_Staff>': 'Fellow',
                       '<wants_accommodation>': None}
-        person_name = 'Larry King'
 
         arg_office = {'<room_type>': 'office', '<room_name>': ['Orange']}
 
@@ -195,7 +193,7 @@ class AddPersonTest(unittest.TestCase):
 
         self.assertTrue(isinstance(
             self.interactive_session.andela_dojo['office_spaces'][arg_office['<room_name>'][0].lower()].occupants[
-                'Fellows'][person_name.lower()], Fellow),
+                'Fellows']['lk0'], Fellow),
             msg='add_person command must create Fellow and assign them an office and living room if they wish.')
 
 
@@ -403,7 +401,9 @@ class ReallocatePersonTest(unittest.TestCase):
 
         self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office_1)
         self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_living_space_1)
+
         self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_fellow)
+
         self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg_staff)
 
         self.interactive_session.do_create_room.__wrapped__(self.interactive_session, arg_office_2)
@@ -411,11 +411,11 @@ class ReallocatePersonTest(unittest.TestCase):
 
     def test_reallocate_person(self):
         self.interactive_session.do_reallocate_person.__wrapped__(self.interactive_session,
-                                                                  {'<person_identifier>': 'jimmy-kimmel',
+                                                                  {'<person_identifier>': 'jk0',
                                                                    '<new_room_name>': 'yellow'})
 
         self.interactive_session.do_reallocate_person.__wrapped__(self.interactive_session,
-                                                                  {'<person_identifier>': 'larry-king',
+                                                                  {'<person_identifier>': 'lk1',
                                                                    '<new_room_name>': 'yellow'})
 
         self.assertTrue(len(self.interactive_session.andela_dojo['office_spaces']['brown'].occupants['Fellows']) == 0,
@@ -428,7 +428,7 @@ class ReallocatePersonTest(unittest.TestCase):
                         msg='reallocate_person does not move staff to new office.')
 
         self.interactive_session.do_reallocate_person.__wrapped__(self.interactive_session,
-                                                                  {'<person_identifier>': 'jimmy-kimmel',
+                                                                  {'<person_identifier>': 'jk0',
                                                                    '<new_room_name>': 'red'})
 
         self.assertTrue(len(self.interactive_session.andela_dojo['living_spaces']['white'].occupants) == 0,

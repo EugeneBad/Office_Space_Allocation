@@ -35,6 +35,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
     def __init__(self, dojo_object):
         super().__init__()
         self.andela_dojo = dojo_object
+        self.id_generator = 0
 
     # Function to implement the CLI command create_room.
     @docopt_cmd
@@ -134,6 +135,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         add_person <first_name> <last_name> <Fellow_or_Staff> [<wants_accommodation>]"""
 
         person_name = arg['<first_name>'] + ' ' + arg['<last_name>']
+        person_id = arg['<first_name>'][0]+arg['<last_name>'][0]+str(self.id_generator)
 
         # Check if person is staff and wants accommodation.
         if arg['<Fellow_or_Staff>'].lower() == 'staff' and arg['<wants_accommodation>'] == 'Y':
@@ -167,10 +169,12 @@ class InteractiveRoomAllocator(cmd.Cmd):
         if arg['<Fellow_or_Staff>'].lower() == 'staff' and str(arg['<wants_accommodation>']).lower() != 'y':
 
             if random_office is not None:
-                random_office.occupants['Staff'][person_name.lower()] = Staff(person_name.lower())
+                random_office.occupants['Staff'][person_id.lower()] = Staff(person_name.lower())
 
                 print('\n\tStaff {} has been added successfully!'.format(person_name))
                 print('\t{} has been given office: {}'.format(person_name, random_office.name))
+
+                self.id_generator += 1
 
             if random_office is None:
                 self.andela_dojo['unallocated']['Office'][person_name.lower()] = Staff(person_name.lower())
@@ -182,7 +186,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
             if random_living_space is not None:  # If living space is available
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
-                random_living_space.occupants[person_name.lower()] = Fellow(person_name.lower(), 'Y')
+                random_living_space.occupants[person_id.lower()] = Fellow(person_name.lower(), 'Y')
 
                 print('\n\tFellow {} has been added successfully!'.format(person_name))
                 print('\t{} has been given living space: {}'.format(person_name, random_living_space.name))
@@ -198,15 +202,17 @@ class InteractiveRoomAllocator(cmd.Cmd):
             if random_office is not None:  # If office space is  available
 
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
-                random_office.occupants['Fellows'][person_name.lower()] = Fellow(person_name.lower(), 'Y')
+                random_office.occupants['Fellows'][person_id.lower()] = Fellow(person_name.lower(), 'Y')
                 print('\n\t{} has been given office space: {}'.format(person_name, random_office.name))
+
+            self.id_generator += 1
 
         # If fellow does not want accommodation:
         if arg['<Fellow_or_Staff>'].lower() == 'fellow' and str(arg['<wants_accommodation>']).lower() != 'y':
 
             if random_office is not None:
                 # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
-                random_office.occupants['Fellows'][person_name.lower()] = Fellow(person_name.lower(), 'N')
+                random_office.occupants['Fellows'][person_id.lower()] = Fellow(person_name.lower(), 'N')
 
                 print('\n\tFellow {} has been added successfully!'.format(person_name))
                 print('\t{} has been given office: {}'.format(person_name, random_office.name))
@@ -214,6 +220,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
             if random_office is None:
                 self.andela_dojo['unallocated']['Office'][person_name.lower()] = Fellow(person_name.lower(), 'N')
                 print('\n\tFellow {} has unallocated Office Space'.format(person_name))
+
+            self.id_generator += 1
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
@@ -465,20 +473,20 @@ class InteractiveRoomAllocator(cmd.Cmd):
             # Loop though all living spaces and check if person is an occupant
             for living_space in list(self.andela_dojo['living_spaces'].values()):
 
-                person_name = arg['<person_identifier>'].lower().replace('-', ' ')
+                person_identifier = arg['<person_identifier>'].lower()
 
-                if person_name in living_space.occupants:
+                if person_identifier in living_space.occupants:
 
                     new_room = self.andela_dojo['living_spaces'][arg['<new_room_name>'].lower()]
 
                     # Check if requested room has space in it.
                     if len(new_room.occupants) < 4:
-                        new_room.occupants[person_name] = living_space.occupants[person_name]
+                        new_room.occupants[person_identifier] = living_space.occupants[person_identifier]
 
-                        del living_space.occupants[person_name]
+                        del living_space.occupants[person_identifier]
 
                         print('Fellow {} has been successfully reallocated from living space {} to living space {}'.format(
-                            person_name.capitalize(), living_space.name, new_room.name))
+                            new_room.occupants[person_identifier].name.capitalize(), living_space.name, new_room.name))
                         break
 
                     else:
@@ -490,31 +498,31 @@ class InteractiveRoomAllocator(cmd.Cmd):
             # Loop though all offices and check if person is a staff or fellow occupant
             for office_space in list(self.andela_dojo['office_spaces'].values()):
 
-                person_name = arg['<person_identifier>'].replace('-', ' ').lower()
+                person_identifier = arg['<person_identifier>'].lower()
                 new_room = self.andela_dojo['office_spaces'][arg['<new_room_name>'].lower()]
 
-                if person_name in office_space.occupants['Staff']:
+                if person_identifier in office_space.occupants['Staff']:
 
                     # Check if requested room has space in it.
-                    if len(new_room.occupants['Staff']) +  len(new_room.occupants['Fellows']) < 6:
-                        new_room.occupants['Staff'][person_name] = office_space.occupants['Staff'][person_name]
+                    if len(new_room.occupants['Staff']) + len(new_room.occupants['Fellows']) < 6:
+                        new_room.occupants['Staff'][person_identifier] = office_space.occupants['Staff'][person_identifier]
 
-                    del office_space.occupants['Staff'][person_name]
+                    del office_space.occupants['Staff'][person_identifier]
 
                     print('Staff {} has been successfully reallocated from office space: {} to office space: {}'.format(
-                        person_name.capitalize(), office_space.name, new_room.name))
+                        new_room.occupants['Staff'][person_identifier].name.capitalize(), office_space.name, new_room.name))
                     break
 
-                elif person_name in office_space.occupants['Fellows']:
+                elif person_identifier in office_space.occupants['Fellows']:
 
-                    if len(new_room.occupants['Staff']) +  len(new_room.occupants['Fellows']) < 6:
-                        new_room.occupants['Fellows'][person_name] = office_space.occupants['Fellows'][person_name]
+                    if len(new_room.occupants['Staff']) + len(new_room.occupants['Fellows']) < 6:
+                        new_room.occupants['Fellows'][person_identifier] = office_space.occupants['Fellows'][person_identifier]
 
-                    del office_space.occupants['Fellows'][person_name]
+                    del office_space.occupants['Fellows'][person_identifier]
 
                     print(
                         'Fellow {} has been successfully reallocated from office space: {} to office space: {}'.format(
-                            person_name.capitalize(), office_space.name, new_room.name))
+                            new_room.occupants['Fellows'][person_identifier].name.capitalize(), office_space.name, new_room.name))
                     break
         else:
             print('Invalid Room Name or Person ID.')
