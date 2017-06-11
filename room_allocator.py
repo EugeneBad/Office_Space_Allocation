@@ -459,7 +459,26 @@ class InteractiveRoomAllocator(cmd.Cmd):
     def do_reallocate_person(self, arg):
         """Usage: reallocate_person <person_identifier> <new_room_name>"""
 
-        
+        if arg['<new_room_name>'].lower() in self.andela_dojo['living_spaces']:
+
+            for living_space in list(self.andela_dojo['living_spaces'].values()):
+
+                person_name = arg['<person_identifier>'].lower().replace('-', ' ')
+
+                if person_name in living_space.occupants:
+
+                    new_room = self.andela_dojo['living_spaces'][arg['<new_room_name>'].lower()]
+
+                    if len(new_room.occupants) < 5:
+                        new_room.occupants[person_name] = living_space.occupants[person_name]
+
+                    del living_space.occupants[person_name]
+
+                    print('Fellow {} has been successfully reallocated from living space {} to living space {}'.format(
+                        person_name.capitalize(), living_space.name, new_room.name))
+                    break
+
+
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
