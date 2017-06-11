@@ -295,9 +295,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         try:  # When an output file is desired
 
-            if arg['<output>'].lower() == 'y':
+            if arg['<output>'].lower() is not None:
 
-                output = open("E:\have_allocations.txt", "w+")
+                output = open("{}.txt".format(arg['<output>'].lower()), "w+")
             else:
 
                 output = None
@@ -353,9 +353,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         try:
 
-            if arg['<output>'].lower() == 'y':
+            if arg['<output>'].lower() is not None:
 
-                output = open("have_no_allocations.txt", "w+")
+                output = open("{}.txt".format(arg['<output>'].lower()), "w+")
             else:
 
                 output = None
