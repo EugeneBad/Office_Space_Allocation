@@ -459,8 +459,10 @@ class InteractiveRoomAllocator(cmd.Cmd):
     def do_reallocate_person(self, arg):
         """Usage: reallocate_person <person_identifier> <new_room_name>"""
 
+        # Check if requested room is a living space and look for person's current living space.
         if arg['<new_room_name>'].lower() in self.andela_dojo['living_spaces']:
 
+            # Loop though all living spaces and check if person is an occupant
             for living_space in list(self.andela_dojo['living_spaces'].values()):
 
                 person_name = arg['<person_identifier>'].lower().replace('-', ' ')
@@ -469,17 +471,23 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
                     new_room = self.andela_dojo['living_spaces'][arg['<new_room_name>'].lower()]
 
-                    if len(new_room.occupants) < 5:
+                    # Check if requested room has space in it.
+                    if len(new_room.occupants) < 4:
                         new_room.occupants[person_name] = living_space.occupants[person_name]
 
-                    del living_space.occupants[person_name]
+                        del living_space.occupants[person_name]
 
-                    print('Fellow {} has been successfully reallocated from living space {} to living space {}'.format(
-                        person_name.capitalize(), living_space.name, new_room.name))
-                    break
+                        print('Fellow {} has been successfully reallocated from living space {} to living space {}'.format(
+                            person_name.capitalize(), living_space.name, new_room.name))
+                        break
 
+                    else:
+                        print('Living space {} has no available space'.format(new_room.name.capitalize()))
+
+        # Check if requested room is an office and look for person's current office.
         elif arg['<new_room_name>'].lower() in self.andela_dojo['office_spaces']:
 
+            # Loop though all offices and check if person is a staff or fellow occupant
             for office_space in list(self.andela_dojo['office_spaces'].values()):
 
                 person_name = arg['<person_identifier>'].replace('-', ' ').lower()
@@ -487,6 +495,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
                 if person_name in office_space.occupants['Staff']:
 
+                    # Check if requested room has space in it.
                     if len(new_room.occupants) < 7:
                         new_room.occupants['Staff'][person_name] = office_space.occupants['Staff'][person_name]
 
@@ -498,7 +507,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
                 elif person_name in office_space.occupants['Fellows']:
 
-                    if len(new_room.occupants) < 7:
+                    if len(new_room.occupants) < 6:
                         new_room.occupants['Fellows'][person_name] = office_space.occupants['Fellows'][person_name]
 
                     del office_space.occupants['Fellows'][person_name]
