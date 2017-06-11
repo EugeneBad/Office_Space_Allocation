@@ -478,6 +478,38 @@ class InteractiveRoomAllocator(cmd.Cmd):
                         person_name.capitalize(), living_space.name, new_room.name))
                     break
 
+        elif arg['<new_room_name>'].lower() in self.andela_dojo['office_spaces']:
+
+            for office_space in list(self.andela_dojo['office_spaces'].values()):
+
+                person_name = arg['<person_identifier>'].replace('-', ' ').lower()
+                new_room = self.andela_dojo['office_spaces'][arg['<new_room_name>'].lower()]
+
+                if person_name in office_space.occupants['Staff']:
+
+                    if len(new_room.occupants) < 7:
+                        new_room.occupants['Staff'][person_name] = office_space.occupants['Staff'][person_name]
+
+                    del office_space.occupants['Staff'][person_name]
+
+                    print('Staff {} has been successfully reallocated from office space: {} to office space: {}'.format(
+                        person_name.capitalize(), office_space.name, new_room.name))
+                    break
+
+                elif person_name in office_space.occupants['Fellows']:
+
+                    if len(new_room.occupants) < 7:
+                        new_room.occupants['Fellows'][person_name] = office_space.occupants['Fellows'][person_name]
+
+                    del office_space.occupants['Fellows'][person_name]
+
+                    print(
+                        'Fellow {} has been successfully reallocated from office space: {} to office space: {}'.format(
+                            person_name.capitalize(), office_space.name, new_room.name))
+                    break
+        else:
+            print('Invalid Room Name or Person ID.')
+            print('Use print_allocations command for help')
 
 
 if __name__ == '__main__':
