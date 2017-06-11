@@ -455,6 +455,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
                                                           '<Fellow_or_Staff>': person_type,
                                                           '<wants_accommodation>': None})
 
+    @docopt_cmd
+    def do_reallocate_person(self, arg):
+        """Usage: reallocate_person <person_identifier> <new_room_name>"""
+
+        
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])
