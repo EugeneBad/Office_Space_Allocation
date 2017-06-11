@@ -69,20 +69,25 @@ class InteractiveRoomAllocator(cmd.Cmd):
                     if len(people_reallocated_offices) < 6:
                         if person.type.lower() == 'staff':
 
-                            self.andela_dojo['office_spaces'][each_office.lower()].occupants['Staff'][person.name.lower()] = \
+                            person_names = person.name.lower().split(' ')
+                            person_id = person_names[0][0] + person_names[1][0] + str(self.id_generator)
+                            self.andela_dojo['office_spaces'][each_office.lower()].occupants['Staff'][person_id] = \
                                 Staff(person.name.lower())
+                            self.id_generator += 1
 
-                            people_reallocated_offices.append(person.name.lower())
+                            people_reallocated_offices.append(person.name)
 
                             print('Staff {} has been successfully moved'
                                   ' to the new office: {}'.format(person.name.capitalize(), each_office.capitalize()))
 
                         if person.type.lower() == 'fellow':
-
-                            self.andela_dojo['office_spaces'][each_office.lower()].occupants['Fellows'][person.name.lower()] = \
+                            person_names = person.name.split(' ')
+                            person_id = person_names[0][0] + person_names[1][0] + str(self.id_generator)
+                            self.andela_dojo['office_spaces'][each_office.lower()].occupants['Fellows'][person_id] = \
                                 Fellow(person.name.lower(), person.accommodation)
+                            self.id_generator += 1
 
-                            people_reallocated_offices.append(person.name.lower())
+                            people_reallocated_offices.append(person.name)
 
                             print('Fellow {} has been successfully moved '
                                   'to the new office: {}'.format(person.name.capitalize(), each_office.capitalize()))
@@ -114,11 +119,16 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
                 # Loop through each fellow and add them to the newly created room.
                 for fellow in living_spaceless_fellows:
+
+                    fellow_names = fellow.name.split(' ')
+                    person_id = fellow_names[0][0] + fellow_names[1][0] + str(self.id_generator)
+
                     if len(fellows_reallocated_living_spaces) < 4:
-                        self.andela_dojo['living_spaces'][each_living_space.lower()].occupants[fellow.name.lower()] = \
+                        self.andela_dojo['living_spaces'][each_living_space.lower()].occupants[person_id] = \
                             Fellow(fellow.name.lower(), fellow.accommodation)
 
-                        fellows_reallocated_living_spaces.append(fellow.name.lower())
+                        self.id_generator += 1
+                        fellows_reallocated_living_spaces.append(fellow.name)
 
                         print('Fellow {} has been successfully moved'
                               ' to the new living space: {}'.format(fellow.name.capitalize(), each_living_space.capitalize()))
@@ -133,6 +143,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
     def do_add_person(self, arg):
         """Usage:
         add_person <first_name> <last_name> <Fellow_or_Staff> [<wants_accommodation>]"""
+        # Note: Unallocated people have no person_id.
 
         person_name = arg['<first_name>'] + ' ' + arg['<last_name>']
         person_id = arg['<first_name>'][0]+arg['<last_name>'][0]+str(self.id_generator)
