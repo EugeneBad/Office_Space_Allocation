@@ -132,7 +132,7 @@ class AddPersonTest(unittest.TestCase):
 
     def test_unallocated_Person(self):
         arg = {'<first_name>': 'Aretha', '<last_name>': 'Franklin', '<Fellow_or_Staff>': 'Staff', '<wants_accommodation>': 'N'}
-        some_guy = 'Aretha Franklin'
+
 
         # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
         self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg)
@@ -142,13 +142,12 @@ class AddPersonTest(unittest.TestCase):
             msg='add_person command must create Person with unallocated office if their is no free office space')
 
         arg = {'<first_name>': 'Thelonius', '<last_name>': 'Monk', '<Fellow_or_Staff>': 'Fellow', '<wants_accommodation>': 'Y'}
-        other_guy = 'Thelonius Monk'
 
         # Unwrap the do_create_room function to pass arg directly to the function called by create_room command
         self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg)
 
         self.assertTrue(
-            isinstance(self.interactive_session.andela_dojo['unallocated']['Living_Space'][other_guy.lower()],
+            isinstance(self.interactive_session.andela_dojo['unallocated']['Living_Space']['tm0'],
                        Person),
             msg='add_person command must create Person with unallocated living space if their is no free living space')
 

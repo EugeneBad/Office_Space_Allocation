@@ -26,4 +26,5 @@ class RoomTest(unittest.TestCase):
 
     def test_office_occupants(self):
         self.assertEqual(type(self.office.occupants['Staff']), dict, msg='Staff dictionary in occupants does not exist')
-        self.assertEqual(type(self.office.occupants['Fellows']), dict, msg='Living dictionary in occupants does not exist')
+        self.assertEqual(type(self.office.occupants['Fellows']), dict, msg='Living dictionary in occupants does not '
+                                                                           'exist')

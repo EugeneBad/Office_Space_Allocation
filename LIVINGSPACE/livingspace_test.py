@@ -21,7 +21,9 @@ class LivingSpaceTest(unittest.TestCase):
         self.assertEqual(type(self.some_living_space.occupants), dict, msg='Living space occupants is not a dictionary')
 
     def test_maximum_living_sapce_occupants(self):
-        self.assertEqual(self.some_living_space.maximum_occupants, 4, msg='Wrong number of maximum living space occupants')
+        self.assertEqual(self.some_living_space.maximum_occupants, 4, msg='Wrong number of maximum living space '
+                                                                          'occupants')
 
     def test_living_space_occupants(self):
-        self.assertEqual(type(self.some_living_space.occupants), dict, msg='No occupants dictionary in LivingSpace class ')
+        self.assertEqual(type(self.some_living_space.occupants), dict, msg='No occupants dictionary in LivingSpace '
+                                                                           'class ')

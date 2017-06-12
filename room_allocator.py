@@ -115,7 +115,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 # Populate list of fellow without living spaces.
                 living_spaceless_fellows = self.andela_dojo['unallocated']['Living_Space']
                 fellows_reallocated_living_spaces = []
-                print(living_spaceless_fellows)
+
                 # Loop through each fellow and add them to the newly created room.
                 for fellow_key in living_spaceless_fellows:
                     fellow_value = living_spaceless_fellows[fellow_key]
