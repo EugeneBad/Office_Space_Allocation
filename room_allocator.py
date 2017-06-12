@@ -61,36 +61,35 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
                 counter += 1
                 # After office has been created, populate the list of people without offices.
-                officeless_people = self.andela_dojo['unallocated']['Office'].values()
+                officeless_people = self.andela_dojo['unallocated']['Office']
                 people_reallocated_offices = []
 
                 # Loop through each person without an office and add them to the newly created office
-                for person in officeless_people:
+                for person_key, person_value in officeless_people.items():
+
+                    person_names = person_value.name.lower()
+                    person_id = person_key
+
                     if len(people_reallocated_offices) < 6:
-                        if person.type.lower() == 'staff':
+                        if person_value.type.lower() == 'staff':
 
-                            person_names = person.name.lower().split(' ')
-                            person_id = person_names[0][0] + person_names[1][0] + str(self.id_generator)
                             self.andela_dojo['office_spaces'][each_office.lower()].occupants['Staff'][person_id] = \
-                                Staff(person.name.lower())
-                            self.id_generator += 1
+                                Staff(person_names)
 
-                            people_reallocated_offices.append(person.name)
+                            people_reallocated_offices.append(person_id)
 
                             print('Staff {} has been successfully moved'
-                                  ' to the new office: {}'.format(person.name.capitalize(), each_office.capitalize()))
+                                  ' to the new office: {}'.format(person_names.capitalize(), each_office.capitalize()))
 
-                        if person.type.lower() == 'fellow':
-                            person_names = person.name.split(' ')
-                            person_id = person_names[0][0] + person_names[1][0] + str(self.id_generator)
+                        if person_value.type.lower() == 'fellow':
+
                             self.andela_dojo['office_spaces'][each_office.lower()].occupants['Fellows'][person_id] = \
-                                Fellow(person.name.lower(), person.accommodation)
-                            self.id_generator += 1
+                                Fellow(person_names, person_value.accommodation)
 
-                            people_reallocated_offices.append(person.name)
+                            people_reallocated_offices.append(person_id)
 
                             print('Fellow {} has been successfully moved '
-                                  'to the new office: {}'.format(person.name.capitalize(), each_office.capitalize()))
+                                  'to the new office: {}'.format(person_names.capitalize(), each_office.capitalize()))
 
                 # After person is added to the new office, remove them from list of people unallocated offices
                 for person in people_reallocated_offices:
@@ -114,24 +113,23 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 counter += 1
 
                 # Populate list of fellow without living spaces.
-                living_spaceless_fellows = self.andela_dojo['unallocated']['Living_Space'].values()
+                living_spaceless_fellows = self.andela_dojo['unallocated']['Living_Space']
                 fellows_reallocated_living_spaces = []
-
+                print(living_spaceless_fellows)
                 # Loop through each fellow and add them to the newly created room.
-                for fellow in living_spaceless_fellows:
-
-                    fellow_names = fellow.name.split(' ')
-                    person_id = fellow_names[0][0] + fellow_names[1][0] + str(self.id_generator)
+                for fellow_key in living_spaceless_fellows:
+                    fellow_value = living_spaceless_fellows[fellow_key]
+                    fellow_names = fellow_value.name
+                    person_id = fellow_key
 
                     if len(fellows_reallocated_living_spaces) < 4:
                         self.andela_dojo['living_spaces'][each_living_space.lower()].occupants[person_id] = \
-                            Fellow(fellow.name.lower(), fellow.accommodation)
+                            Fellow(fellow_names.lower(), fellow_value.accommodation)
 
-                        self.id_generator += 1
-                        fellows_reallocated_living_spaces.append(fellow.name)
+                        fellows_reallocated_living_spaces.append(person_id)
 
                         print('Fellow {} has been successfully moved'
-                              ' to the new living space: {}'.format(fellow.name.capitalize(), each_living_space.capitalize()))
+                              ' to the new living space: {}'.format(fellow_names.capitalize(), each_living_space.capitalize()))
 
                 # After fellow has been added to the new living space, remove them
                 # from list of people unallocated living spaces
@@ -188,7 +186,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 self.id_generator += 1
 
             if random_office is None:
-                self.andela_dojo['unallocated']['Office'][person_name.lower()] = Staff(person_name.lower())
+                self.andela_dojo['unallocated']['Office'][person_id.lower()] = Staff(person_name.lower())
                 print('\n\tStaff {} has unallocated Office Space'.format(person_name))
 
         # If fellow wants accommodation:
@@ -203,11 +201,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 print('\t{} has been given living space: {}'.format(person_name, random_living_space.name))
 
             if random_living_space is None:  # If living space is not available
-                self.andela_dojo['unallocated']['Living_Space'][person_name.lower()] = Fellow(person_name.lower(), 'Y')
+                self.andela_dojo['unallocated']['Living_Space'][person_id.lower()] = Fellow(person_name.lower(), 'Y')
                 print('\n\tFellow {} has unallocated Living Space'.format(person_name))
 
             if random_office is None:  # If office space is not available
-                self.andela_dojo['unallocated']['Office'][person_name.lower()] = Fellow(person_name.lower(), 'Y')
+                self.andela_dojo['unallocated']['Office'][person_id.lower()] = Fellow(person_name.lower(), 'Y')
                 print('\n\tFellow {} has unallocated Office Space'.format(person_name))
 
             if random_office is not None:  # If office space is  available
@@ -229,7 +227,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 print('\t{} has been given office: {}'.format(person_name, random_office.name))
 
             if random_office is None:
-                self.andela_dojo['unallocated']['Office'][person_name.lower()] = Fellow(person_name.lower(), 'N')
+                self.andela_dojo['unallocated']['Office'][person_id.lower()] = Fellow(person_name.lower(), 'N')
                 print('\n\tFellow {} has unallocated Office Space'.format(person_name))
 
             self.id_generator += 1

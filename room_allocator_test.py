@@ -138,7 +138,7 @@ class AddPersonTest(unittest.TestCase):
         self.interactive_session.do_add_person.__wrapped__(self.interactive_session, arg)
 
         self.assertTrue(
-            isinstance(self.interactive_session.andela_dojo['unallocated']['Office'][some_guy.lower()], Person),
+            isinstance(self.interactive_session.andela_dojo['unallocated']['Office']['af0'], Person),
             msg='add_person command must create Person with unallocated office if their is no free office space')
 
         arg = {'<first_name>': 'Thelonius', '<last_name>': 'Monk', '<Fellow_or_Staff>': 'Fellow', '<wants_accommodation>': 'Y'}
