@@ -1,6 +1,5 @@
 import unittest
-from LIVINGSPACE.livingspace import LivingSpace
-from ROOM.room import Room
+from ROOM.room import Room, LivingSpace
 
 
 class LivingSpaceTest(unittest.TestCase):
@@ -26,4 +25,4 @@ class LivingSpaceTest(unittest.TestCase):
 
     def test_living_space_occupants(self):
         self.assertEqual(type(self.some_living_space.occupants), dict, msg='No occupants dictionary in LivingSpace '
-                                                                           'class ')
+'class ')

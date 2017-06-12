@@ -11,11 +11,8 @@ import sys
 from docopt_decorator import docopt_cmd
 # Class importations
 from DOJO.dojo import Dojo
-from FELLOW.fellow import Fellow
-from LIVINGSPACE.livingspace import LivingSpace
-from OFFICE.office import Office
-from STAFF.staff import Staff
-
+from ROOM.room import LivingSpace, Office
+from PERSON.person import Staff, Fellow
 import random
 # Importations for database
 import pickle
@@ -194,7 +191,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             if random_living_space is not None:  # If living space is available
 
-                # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
+                # Add Fellow to Fellow dictionary in the occupants attribute of the random_living_space
                 random_living_space.occupants[person_id.lower()] = Fellow(person_name.lower(), 'Y')
 
                 print('\n\tFellow {} has been added successfully!'.format(person_name))
@@ -210,7 +207,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             if random_office is not None:  # If office space is  available
 
-                # Add Fellow to Fellow dictionary in the occupants attribute of the random_random_living_space
+                # Add Fellow to Fellow dictionary in the occupants attribute of the random_office
                 random_office.occupants['Fellows'][person_id.lower()] = Fellow(person_name.lower(), 'Y')
                 print('\n\t{} has been given office space: {}'.format(person_name, random_office.name))
 
@@ -295,7 +292,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             if arg['<output>'].lower() is not None:
 
-                output = open("{}.txt".format(arg['<output>'].lower()), "w+")
+                output = open("output_files/{}.txt".format(arg['<output>'].lower()), "w+")
             else:
 
                 output = None
@@ -353,7 +350,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             if arg['<output>'].lower() is not None:
 
-                output = open("{}.txt".format(arg['<output>'].lower()), "w+")
+                output = open("output_files/{}.txt".format(arg['<output>'].lower()), "w+")
             else:
 
                 output = None
@@ -388,7 +385,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         """Usage: load_state [<output>] """
 
         # Create an engine to link to the database
-        engine = create_engine('sqlite:///interactive_status.db', echo=False)
+        engine = create_engine('sqlite:///database/interactive_status.db', echo=False)
 
         # Create a session
         Session = sessionmaker(bind=engine)
@@ -413,24 +410,24 @@ class InteractiveRoomAllocator(cmd.Cmd):
     # Save interactive state to database
     @docopt_cmd
     def do_save_state(self, arg):
-        """Usage: load_state [<output>] """
+        """Usage: save_state [<output>] """
         # Open a file to store the dojo object.
-        with open("status.pickle", "wb") as status:
+        with open("database/status.pickle", "wb") as status:
             pickle.dump(self.andela_dojo, status, protocol=pickle.HIGHEST_PROTOCOL)  # Write the current object to it.
 
         # Convert the file into a binary object.
-        with open("status.pickle", 'rb') as status_file:
+        with open("database/status.pickle", 'rb') as status_file:
             status_bin = status_file.read()
 
         # Create engine to talk to database
-        status_engine = create_engine('sqlite:///interactive_status.db', echo=False)
+        status_engine = create_engine('sqlite:///database/interactive_status.db', echo=False)
         Base = declarative_base()
         Base.metadata.create_all(status_engine)
 
         try:  # Try if session name is provided
             saved_state = State(state_name=arg['<output>'].lower(), state_file=status_bin)  # Create entry in table
 
-        except (KeyError, AttributeError):
+        except AttributeError:
             saved_state = State(state_name='default', state_file=status_bin)  # Create entry in table
 
         # Create session to talk to database
@@ -443,10 +440,16 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
     @docopt_cmd
     def do_load_people(self, arg):
-        """Usage: load_people"""
+        """Usage: load_people [<load_file>]"""
 
-        # Open the file to be loaded using a 'with' statement to ensure file is automatically closed.
-        with open("load_file.txt", 'r') as file:
+        if arg['<load_file>'] is not None:
+            load_file = arg['<load_file>']
+
+        else:
+            load_file = 'dump'
+
+            # Open the file to be loaded using a 'with' statement to ensure file is automatically closed.
+        with open("output_files/{}.txt".format(load_file), 'r') as file:
 
             # Read the file line by line extracting out details of person to be added.
             for line in file:
@@ -479,6 +482,9 @@ class InteractiveRoomAllocator(cmd.Cmd):
         # Check if requested room is a living space and look for person's current living space.
         if arg['<new_room_name>'].lower() in self.andela_dojo['living_spaces']:
 
+            invalid_id_msg = 'Cannot find Fellow with that id.' \
+                            'Note: Staff cannot be allocated living spaces'
+
             # Loop though all living spaces and check if person is an occupant
             for living_space in list(self.andela_dojo['living_spaces'].values()):
 
@@ -496,13 +502,18 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
                         print('Fellow {} has been successfully reallocated from living space {} to living space {}'.format(
                             new_room.occupants[person_identifier].name.capitalize(), living_space.name, new_room.name))
+                        invalid_id_msg = ''
                         break
 
                     else:
+                        invalid_id_msg = ''
                         print('Living space {} has no available space'.format(new_room.name.capitalize()))
+            print(invalid_id_msg)
 
         # Check if requested room is an office and look for person's current office.
         elif arg['<new_room_name>'].lower() in self.andela_dojo['office_spaces']:
+
+            invalid_id_msg = 'Invalid id, use print_allocations command for guidance'
 
             # Loop though all offices and check if person is a staff or fellow occupant
             for office_space in list(self.andela_dojo['office_spaces'].values()):
@@ -516,25 +527,37 @@ class InteractiveRoomAllocator(cmd.Cmd):
                     if len(new_room.occupants['Staff']) + len(new_room.occupants['Fellows']) < 6:
                         new_room.occupants['Staff'][person_identifier] = office_space.occupants['Staff'][person_identifier]
 
-                    del office_space.occupants['Staff'][person_identifier]
+                        del office_space.occupants['Staff'][person_identifier]
 
-                    print('Staff {} has been successfully reallocated from office space: {} to office space: {}'.format(
-                        new_room.occupants['Staff'][person_identifier].name.capitalize(), office_space.name, new_room.name))
-                    break
+                        print('Staff {} has been successfully reallocated from office space: {} to office space: {}'.format(
+                            new_room.occupants['Staff'][person_identifier].name.capitalize(), office_space.name, new_room.name))
+
+                        invalid_id_msg = ''
+                        break
+
+                    else:
+                        print('Office space {} has no available space'.format(new_room.name.capitalize()))
 
                 elif person_identifier in office_space.occupants['Fellows']:
 
                     if len(new_room.occupants['Staff']) + len(new_room.occupants['Fellows']) < 6:
                         new_room.occupants['Fellows'][person_identifier] = office_space.occupants['Fellows'][person_identifier]
 
-                    del office_space.occupants['Fellows'][person_identifier]
+                        del office_space.occupants['Fellows'][person_identifier]
 
-                    print(
-                        'Fellow {} has been successfully reallocated from office space: {} to office space: {}'.format(
-                            new_room.occupants['Fellows'][person_identifier].name.capitalize(), office_space.name, new_room.name))
-                    break
+                        print(
+                            'Fellow {} has been successfully reallocated from office space: {} to office space: {}'.format(
+                                new_room.occupants['Fellows'][person_identifier].name.capitalize(), office_space.name, new_room.name))
+
+                        invalid_id_msg = ''
+                        break
+
+                    else:
+                        print('Office space {} has no available space'.format(new_room.name.capitalize()))
+
+            print(invalid_id_msg)
         else:
-            print('Invalid Room Name or Person ID.')
+            print('Invalid Room Name')
             print('Use print_allocations command for guidance')
 
 

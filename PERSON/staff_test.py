@@ -1,6 +1,5 @@
 import unittest
-from PERSON.person import Person
-from STAFF.staff import Staff
+from PERSON.person import Person, Staff
 
 
 class StaffTest(unittest.TestCase):

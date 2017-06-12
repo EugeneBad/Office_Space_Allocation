@@ -1,6 +1,5 @@
 import unittest
-from OFFICE.office import Office
-from ROOM.room import Room
+from ROOM.room import Room, Office
 
 
 class OfficeTest(unittest.TestCase):

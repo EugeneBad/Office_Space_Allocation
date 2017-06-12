@@ -1,10 +1,6 @@
 from DOJO.dojo import Dojo
-from FELLOW.fellow import Fellow
-from LIVINGSPACE.livingspace import LivingSpace
-from OFFICE.office import Office
-from PERSON.person import Person
-from STAFF.staff import Staff
-from ROOM.room import Room
+from PERSON.person import Person, Staff, Fellow
+from ROOM.room import Room, Office, LivingSpace
 from room_allocator import InteractiveRoomAllocator
 import unittest
 from cmd import Cmd
@@ -302,14 +298,14 @@ class SaveStateTest(unittest.TestCase):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
     def test_data_saved_by_save_state(self):
-        self.interactive_session.do_save_state.__wrapped__(self.interactive_session, {})
+        self.interactive_session.do_save_state.__wrapped__(self.interactive_session, {'<output>': None})
 
-        engine = create_engine('sqlite:///interactive_status.db', echo=False)
+        engine = create_engine('sqlite:///database/interactive_status.db', echo=False)
         Session = sessionmaker(bind=engine)
 
         session = Session()
 
-        for back in session.query(State).filter(State.state_name == 'learn'):
+        for back in session.query(State).filter(State.state_name == 'default'):
             requested_state = pickle.loads(back.state_file)
 
             self.assertTrue(isinstance(requested_state, Dojo), msg='save_state does not save the dojo object ')
@@ -373,7 +369,7 @@ class LoadPeopleTest(unittest.TestCase):
         self.interactive_session = InteractiveRoomAllocator(Dojo())
 
     def test_load_people(self):
-        self.interactive_session.do_load_people.__wrapped__(self.interactive_session, {})
+        self.interactive_session.do_load_people.__wrapped__(self.interactive_session, {'<load_file>': None})
 
         self.assertTrue(len(self.interactive_session.andela_dojo['unallocated']['Office']) == 7,
                         msg='load_people failed to load people into offices')

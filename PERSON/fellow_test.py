@@ -1,6 +1,5 @@
 import unittest
-from PERSON.person import Person
-from FELLOW.fellow import Fellow
+from PERSON.person import Person, Fellow
 
 
 class FellowTest(unittest.TestCase):
