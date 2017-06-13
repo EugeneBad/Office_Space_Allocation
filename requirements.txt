@@ -1,0 +1,4 @@
+sqlalchemy
+docopt
+coverage
+codecov
