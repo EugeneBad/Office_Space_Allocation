@@ -1,0 +1,133 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Intro: Eugene’s Room_Allocator &#8212; Room_Allocator v0.9.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'v0.9.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation and Getting Started" href="starting.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="starting.html" title="Installation and Getting Started"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Room_Allocator v0.9.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="intro-eugene-s-room-allocator">
+<h1>Intro: Eugene’s Room_Allocator<a class="headerlink" href="#intro-eugene-s-room-allocator" title="Permalink to this headline">¶</a></h1>
+<p>Room_Allocator is a python program that is designed to randomise living space and office allocation for fellows and
+staff at Andela.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starting.html">Installation and Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features and Commands</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="features.html#creating-rooms">Creating Rooms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#adding-persons">Adding Persons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#printing-room-occupants">Printing Room Occupants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#printing-room-allocations">Printing Room Allocations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#printing-unallocated">Printing UnAllocated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#reallocating-person">Reallocating Person</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#loading-people">Loading People</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#saving-an-interactive-session">Saving an Interactive Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#loading-an-interactive-session">Loading an Interactive Session</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<a class="reference internal image-reference" href="_images/Andela.png"><img alt="alternate text" class="align-center" src="_images/Andela.png" style="width: 700px; height: 200px;" /></a>
+<p><strong>Problem Spec</strong></p>
+<p>When a new Fellow joins Andela they are assigned an office space and an optional living space if they choose to opt in.
+When a new Staff joins they are assigned an office space only.
+An office can accommodate a maximum of 6 people. A living space can accommodate a maximum of 4 people.
+The goal of the project is to digitize and randomize a room allocation system for one of Andela Kenya’s facilities called The Dojo.</p>
+<p>It is implemented as a command line program which can be run in any terminal (UNIX or Windows) to add
+persons, create rooms plus a host of other functions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Done in fulfillment of the first checkpoint as a requirement in the Andela fellowship program..</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Next topic</h4>
+  <p class="topless"><a href="starting.html"
+                        title="next chapter">Installation and Getting Started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="starting.html" title="Installation and Getting Started"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Room_Allocator v0.9.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Eugene Badriku.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
+    </div>
+  </body>
+</html>

@@ -399,14 +399,16 @@ class InteractiveRoomAllocator(cmd.Cmd):
         except (KeyError, AttributeError):
             state = 'default'
 
-        for back in session.query(State).filter(State.state_name == state):
-            requested_state = pickle.loads(back.state_file)
+        try:
+            for back in session.query(State).filter(State.state_name == state):
+                requested_state = pickle.loads(back.state_file)
 
-        # Reload the interactive session with retrieved object as self.andela_dojo
-        print('Exiting........')
+            # Reload the interactive session with retrieved object as self.andela_dojo
+            self.andela_dojo = requested_state
+            print('Exiting........')
 
-        self.andela_dojo = requested_state
-
+        except UnboundLocalError:
+            print('Session does not exist!')
     # Save interactive state to database
     @docopt_cmd
     def do_save_state(self, arg):
@@ -449,8 +451,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
             load_file = 'dump'
 
             # Open the file to be loaded using a 'with' statement to ensure file is automatically closed.
-        with open("output_files/{}.txt".format(load_file), 'r') as file:
-
+        with open("output_files/{}.txt".format(load_file), 'a+') as file:
+            file.seek(0)
             # Read the file line by line extracting out details of person to be added.
             for line in file:
 

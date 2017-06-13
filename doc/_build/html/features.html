@@ -1,0 +1,286 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Features and Commands &#8212; Room_Allocator v0.9.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'v0.9.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Installation and Getting Started" href="starting.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="starting.html" title="Installation and Getting Started"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Room_Allocator v0.9.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="features-and-commands">
+<h1>Features and Commands<a class="headerlink" href="#features-and-commands" title="Permalink to this headline">¶</a></h1>
+<p>Room_Allocator is designed as an easy to use program with multiple features accessible via a simple command line interface.
+The functionality of each feature is initiated by typing out a command with it’s necessary arguments; and the rest is handled
+internally.</p>
+<div class="section" id="creating-rooms">
+<h2>Creating Rooms<a class="headerlink" href="#creating-rooms" title="Permalink to this headline">¶</a></h2>
+<p>This is perhaps the first feature one would use!
+It is implemented using the <strong>create_room</strong> command. Usage information is available by typing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">help</span> <span class="n">create_room</span>
+</pre></div>
+</div>
+<p>as shown below:</p>
+<a class="reference internal image-reference" href="_images/create_help.png"><img alt="alternate text" class="align-center" src="_images/create_help.png" style="width: 500px; height: 130px;" /></a>
+<p>The <em>room_type</em> argument can either be ‘living’ for living spaces or ‘office’ for an office space.</p>
+<p>The <em>room_name</em> is as it says is the room’s name!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The inputs are case insensitive..</p>
+</div>
+<p>Hitting enter will create the desired room as shown below:</p>
+<a class="reference internal image-reference" href="_images/create_room.png"><img alt="alternate text" class="align-center" src="_images/create_room.png" style="width: 500px; height: 130px;" /></a>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The program rejects duplicate room names of the same type..</p>
+</div>
+<dl class="docutils">
+<dt>Other features include:</dt>
+<dd><ul class="first last simple">
+<li>Persons with unallocated office space can be reallocated when new office is created.</li>
+<li>Fellows with unallocated living space can be reallocated when new living space is created.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="adding-persons">
+<h2>Adding Persons<a class="headerlink" href="#adding-persons" title="Permalink to this headline">¶</a></h2>
+<p>This feature allows the user to add persons fellows or staff to the system.
+It is implemented using the <strong>add_person</strong> command. Usage information is available by typing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">help</span> <span class="n">add_person</span>
+</pre></div>
+</div>
+<p>as shown below:</p>
+<a class="reference internal image-reference" href="_images/add_help.png"><img alt="alternate text" class="align-center" src="_images/add_help.png" style="width: 500px; height: 130px;" /></a>
+<p>The <em>first_name</em> and <em>last_name</em> arguments are the person’s first and last names respectively.</p>
+<p>The <em>Fellow_or_Staff</em> argument defines wehther the person being added is a fellow or staff.
+This determines whether or not the person can be assigned a living space.</p>
+<p>The <em>wants_accommodation</em> argument is for fellows to choose whether they want a living space or not. The default is ‘no’.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The inputs are also case insensitive..</p>
+</div>
+<p>If the usage is adhered to, hitting enter will add the person as shown below:</p>
+<a class="reference internal image-reference" href="_images/add_person.png"><img alt="alternate text" class="align-center" src="_images/add_person.png" style="width: 500px; height: 130px;" /></a>
+<dl class="docutils">
+<dt>Other features include:</dt>
+<dd><ul class="first last simple">
+<li>People with the same names can not conflict.</li>
+<li>Fellow will be unallocated if he wants a living room and non is available.</li>
+<li>Fellow or Staff will be unallocated if an office is unavailable.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="printing-room-occupants">
+<h2>Printing Room Occupants<a class="headerlink" href="#printing-room-occupants" title="Permalink to this headline">¶</a></h2>
+<p>This feature is implemented using the <strong>print_room</strong> command. Usage information is available by typing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">help</span> <span class="n">print_room</span>
+</pre></div>
+</div>
+<p>as shown below:</p>
+<a class="reference internal image-reference" href="_images/print_room_help.png"><img alt="alternate text" class="align-center" src="_images/print_room_help.png" style="width: 500px; height: 130px;" /></a>
+<p>The <em>room_name</em> argument corresponds to the room whose occupants are to be printed.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The input is case insensitive..</p>
+</div>
+<p>Hitting enter will print the desired room’s occupants as shown below:</p>
+<a class="reference internal image-reference" href="_images/print_room.png"><img alt="alternate text" class="align-center" src="_images/print_room.png" style="width: 500px; height: 130px;" /></a>
+</div>
+<div class="section" id="printing-room-allocations">
+<h2>Printing Room Allocations<a class="headerlink" href="#printing-room-allocations" title="Permalink to this headline">¶</a></h2>
+<p>This feature is implemented using the <strong>print_allocations</strong> command. Usage information is available by typing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">help</span> <span class="n">print_allocations</span>
+</pre></div>
+</div>
+<p>as shown below:</p>
+<a class="reference internal image-reference" href="_images/print_allocations_help.png"><img alt="alternate text" class="align-center" src="_images/print_allocations_help.png" style="width: 500px; height: 130px;" /></a>
+<p>The <em>output</em> argument corresponds to the name of the .txt file to which the room allocations can be printed if the
+user desires.</p>
+<p>Hitting enter will print the allocations for all the rooms in the system as shown below:</p>
+<a class="reference internal image-reference" href="_images/print_allocations.png"><img alt="alternate text" class="align-center" src="_images/print_allocations.png" style="width: 500px; height: 130px;" /></a>
+</div>
+<div class="section" id="printing-unallocated">
+<h2>Printing UnAllocated<a class="headerlink" href="#printing-unallocated" title="Permalink to this headline">¶</a></h2>
+<p>When either a living space or office is unavailable, persons who are added remain unassigned rooms and thus this feature allows
+the user to view the persons who are unallocated living spaces (for fellows) and office spaces (both staff and fellows).
+This feature is accessed by using the <strong>print_unallocated</strong> command. Usage information can be obtain via:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">help</span> <span class="n">print_unallocated</span>
+</pre></div>
+</div>
+<p>as shown below:</p>
+<a class="reference internal image-reference" href="_images/print_unallocated_help.png"><img alt="alternate text" class="align-center" src="_images/print_unallocated_help.png" style="width: 500px; height: 130px;" /></a>
+<p>The <em>output</em> argument corresponds to the name of the .txt file to which the information can be printed if the
+user desires.</p>
+<p>Hitting enter will print all unallocated persons in the system as shown below:</p>
+<a class="reference internal image-reference" href="_images/print_unallocated.png"><img alt="alternate text" class="align-center" src="_images/print_unallocated.png" style="width: 500px; height: 130px;" /></a>
+</div>
+<div class="section" id="reallocating-person">
+<h2>Reallocating Person<a class="headerlink" href="#reallocating-person" title="Permalink to this headline">¶</a></h2>
+<p>This feature allows a user to reallocate a person from one room to another using the person’s id. This is achieved using
+the <strong>reallocate_person</strong> command. Usage information can be obtain via:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">help</span> <span class="n">reallocate_person</span>
+</pre></div>
+</div>
+<p>as shown below:</p>
+<a class="reference internal image-reference" href="_images/reallocate_person_help.png"><img alt="alternate text" class="align-center" src="_images/reallocate_person_help.png" style="width: 500px; height: 130px;" /></a>
+<p>The <em>person_identifier</em> argument corresponds to the person who is to be relocated.</p>
+<p>The <em>new_room_name</em> argument corresponds to the room to which he is to be relocated</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">A person can only be moved from one office to another or from one living space to another! Only if it has space..</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Staff cannot be relocated to living spaces..</p>
+</div>
+<p>Hitting enter will relocate the person to the desired room as shown below:</p>
+<a class="reference internal image-reference" href="_images/reallocate_person.png"><img alt="alternate text" class="align-center" src="_images/reallocate_person.png" style="width: 1050px; height: 170px;" /></a>
+</div>
+<div class="section" id="loading-people">
+<h2>Loading People<a class="headerlink" href="#loading-people" title="Permalink to this headline">¶</a></h2>
+<p>This feature allows a user to load a text file and add all the people in it at once. This is achieved using
+the <strong>load_people</strong> command. Usage information can be obtain via:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">help</span> <span class="n">load_people</span>
+</pre></div>
+</div>
+<p>as shown below:</p>
+<a class="reference internal image-reference" href="_images/load_people_help.png"><img alt="alternate text" class="align-center" src="_images/load_people_help.png" style="width: 500px; height: 130px;" /></a>
+<p>The <em>load_file</em> argument specifies the name of the file from which to load people.</p>
+<p>Sample file:</p>
+<a class="reference internal image-reference" href="_images/sample_file.png"><img alt="alternate text" class="align-center" src="_images/sample_file.png" style="width: 450px; height: 170px;" /></a>
+<p>Hitting enter will add all the persons as shown:</p>
+<a class="reference internal image-reference" href="_images/load_people.png"><img alt="alternate text" class="align-center" src="_images/load_people.png" style="width: 850px; height: 200px;" /></a>
+</div>
+<div class="section" id="saving-an-interactive-session">
+<h2>Saving an Interactive Session<a class="headerlink" href="#saving-an-interactive-session" title="Permalink to this headline">¶</a></h2>
+<p>This feature allows a user save their current interaction with the program to be retrieved at a later time. This is achieved using
+the <strong>save_state</strong> command. Usage information can be obtain via:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">help</span> <span class="n">save_state</span>
+</pre></div>
+</div>
+<p>as shown below:</p>
+<a class="reference internal image-reference" href="_images/save_state_help.png"><img alt="alternate text" class="align-center" src="_images/save_state_help.png" style="width: 450px; height: 170px;" /></a>
+<p>The <em>output</em> argument specifies the name of the current session.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Specifying an existent name will cause that session to be overwritten..</p>
+</div>
+</div>
+<div class="section" id="loading-an-interactive-session">
+<h2>Loading an Interactive Session<a class="headerlink" href="#loading-an-interactive-session" title="Permalink to this headline">¶</a></h2>
+<p>This feature allows a user to reload their previously saved interaction with the program.
+This is achieved using the <strong>load_state_state</strong> command. Usage information can be obtain via:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">help</span> <span class="n">save_state</span>
+</pre></div>
+</div>
+<p>as shown below:</p>
+<a class="reference internal image-reference" href="_images/load_state_help.png"><img alt="alternate text" class="align-center" src="_images/load_state_help.png" style="width: 450px; height: 170px;" /></a>
+<p>The <em>output</em> argument specifies the name of the session to be retrieved.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Features and Commands</a><ul>
+<li><a class="reference internal" href="#creating-rooms">Creating Rooms</a></li>
+<li><a class="reference internal" href="#adding-persons">Adding Persons</a></li>
+<li><a class="reference internal" href="#printing-room-occupants">Printing Room Occupants</a></li>
+<li><a class="reference internal" href="#printing-room-allocations">Printing Room Allocations</a></li>
+<li><a class="reference internal" href="#printing-unallocated">Printing UnAllocated</a></li>
+<li><a class="reference internal" href="#reallocating-person">Reallocating Person</a></li>
+<li><a class="reference internal" href="#loading-people">Loading People</a></li>
+<li><a class="reference internal" href="#saving-an-interactive-session">Saving an Interactive Session</a></li>
+<li><a class="reference internal" href="#loading-an-interactive-session">Loading an Interactive Session</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="starting.html"
+                        title="previous chapter">Installation and Getting Started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/features.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="starting.html" title="Installation and Getting Started"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Room_Allocator v0.9.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Eugene Badriku.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
+    </div>
+  </body>
+</html>
