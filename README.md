@@ -2,3 +2,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # Docs
 http://office-space-allocation.readthedocs.io/en/latest/
+# Coverage
+https://codecov.io/gh/EugeneBad/Office_Space_Allocation
