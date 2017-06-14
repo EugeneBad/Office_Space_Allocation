@@ -251,6 +251,7 @@ class PrintRoomTest(unittest.TestCase):
                  "----------------------------------------\n" \
                  "Jimmy kimmel\n\n\n" \
                  "Fellows in office space: Orange\n" \
+                 "----------------------------------------\n" \
                  "Larry king\n\n\n"
         self.assertEqual(self.test_print.getvalue(), output, msg="Print_room does not give correct output for offices")
 
@@ -285,10 +286,10 @@ class PrintAllocationsTest(unittest.TestCase):
         self.interactive_session.do_print_allocations.__wrapped__(self.interactive_session, {"<output>": None})
         output = "Fellows in living space: Black\n" \
                  "----------------------------------------\n" \
-                 "Larry king, \n\n\n" \
+                 "(lk0)Larry king, \n\n\n" \
                  "Occupants of office space: Orange\n" \
                  "----------------------------------------\n" \
-                 "Larry king, Jimmy kimmel, \n\n"
+                 "(lk0)Larry king, (jk1)Jimmy kimmel, \n\n"
         self.assertEqual(test_print.getvalue(), output, msg="Print_allocations gives incorrect output")
         sys.stdout = self.original_print
 
