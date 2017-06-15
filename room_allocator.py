@@ -345,7 +345,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
         unallocated_office_space = self.andela_dojo['unallocated']['Office']
         unallocated_living_space = self.andela_dojo['unallocated']['Living_Space']
 
-        if arg['<output>'].lower() is not None:
+        if arg['<output>'] is not None:
 
             output = open("output_files/{}.txt".format(arg['<output>'].lower()), "w+")
         else:
