@@ -386,11 +386,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         session = Session()
 
-        # Try/Except block to determine if session has been specified, defaults to 'default'.
-        try:
+        # if block to determine if session has been specified, defaults to 'default'.
+        if arg['<output>'] is not None:
             state = arg['<output>'].lower()
 
-        except (KeyError, AttributeError):
+        else:
             state = 'default'
 
         try:
