@@ -292,16 +292,11 @@ class InteractiveRoomAllocator(cmd.Cmd):
         living_spaces = self.andela_dojo['living_spaces']
         office_spaces = self.andela_dojo['office_spaces']
 
-        try:  # When an output file is desired
+        if arg['<output>'] is not None:
 
-            if arg['<output>'].lower() is not None:
+            output = open("output_files/{}.txt".format(arg['<output>'].lower()), "w+")
+        else:
 
-                output = open("output_files/{}.txt".format(arg['<output>'].lower()), "w+")
-            else:
-
-                output = None
-
-        except (KeyError, AttributeError):
             output = None
 
         # Go through each living space in the andela dojo
