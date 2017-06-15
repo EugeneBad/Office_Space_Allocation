@@ -336,7 +336,6 @@ class InteractiveRoomAllocator(cmd.Cmd):
         if output is not None:  # Hahahahaha
 
             output.close()
-        return None  # For testing purposes
 
     # Works the same as print_allocation, same comments apply.
     @docopt_cmd
@@ -346,15 +345,10 @@ class InteractiveRoomAllocator(cmd.Cmd):
         unallocated_office_space = self.andela_dojo['unallocated']['Office']
         unallocated_living_space = self.andela_dojo['unallocated']['Living_Space']
 
-        try:
+        if arg['<output>'].lower() is not None:
 
-            if arg['<output>'].lower() is not None:
-
-                output = open("output_files/{}.txt".format(arg['<output>'].lower()), "w+")
-            else:
-
-                output = None
-        except (KeyError, AttributeError):
+            output = open("output_files/{}.txt".format(arg['<output>'].lower()), "w+")
+        else:
             output = None
 
         print('\nPersons with unallocated living space:', file=output, flush=True)
