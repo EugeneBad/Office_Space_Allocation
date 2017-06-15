@@ -1,7 +1,5 @@
 /.idea/
-*/__pycache__/
-*.db
-*.pickle
+/__pycache__
 __pycache__/*
 *.coverage
 *.pyc
