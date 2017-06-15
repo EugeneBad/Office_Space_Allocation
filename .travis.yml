@@ -5,4 +5,8 @@ cache: pip
 install:
   - pip install -r requirements.txt
 script:
+<<<<<<< HEAD
 - python room_allocator_test.py
+=======
+  - python room_allocator_test.py
+>>>>>>> b3f955bfd283d60b65867cc03db08c1c47d108d6
