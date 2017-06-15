@@ -403,6 +403,7 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
         except UnboundLocalError:
             print('Session does not exist!')
+            
     # Save interactive state to database
     @docopt_cmd
     def do_save_state(self, arg):
