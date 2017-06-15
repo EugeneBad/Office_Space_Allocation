@@ -117,8 +117,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
                 fellows_reallocated_living_spaces = []
 
                 # Loop through each fellow and add them to the newly created room.
-                for fellow_key in living_spaceless_fellows:
-                    fellow_value = living_spaceless_fellows[fellow_key]
+                for fellow_key, fellow_value in living_spaceless_fellows.items():
+
                     fellow_names = fellow_value.name
                     person_id = fellow_key
 
@@ -311,9 +311,8 @@ class InteractiveRoomAllocator(cmd.Cmd):
 
             # Print the name of each occupant if the room is not empty
             if len(living_space.occupants.values()) > 0:
-                for Fellows_key in living_space.occupants:
+                for Fellows_key, Fellows_value in living_space.occupants.items():
 
-                    Fellows_value = living_space.occupants[Fellows_key]
                     print('({}){}'.format(Fellows_key, Fellows_value.name.capitalize()), end=', ', file=output, flush=True)
                 print('\n', file=output, flush=True)
 
@@ -327,17 +326,13 @@ class InteractiveRoomAllocator(cmd.Cmd):
             print('----------------------------------------', file=output, flush=True)
 
             if len(office_space.occupants['Fellows'].values()) > 0:
-                for Fellows_key in office_space.occupants['Fellows']:
-
-                    Fellows_value = office_space.occupants['Fellows'][Fellows_key]
+                for Fellows_key, Fellows_value in office_space.occupants['Fellows'].items():
                     print('({}){}'.format(Fellows_key, Fellows_value.name.capitalize()), end=', ', file=output, flush=True)
             else:
                 print('No Fellows', file=output, flush=True)
 
             if len(office_space.occupants['Staff'].values()):
-                for Staff_key in office_space.occupants['Staff']:
-
-                    Staff_value = office_space.occupants['Staff'][Staff_key]
+                for Staff_key, Staff_value in office_space.occupants['Staff'].items():
                     print('({}){}'.format(Staff_key, Staff_value.name.capitalize()), end=', ', file=output, flush=True)
                 print('\n')
             else:
