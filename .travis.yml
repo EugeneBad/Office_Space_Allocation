@@ -7,4 +7,5 @@ install:
 script:
   - python room_allocator_test.py
 after_success:
+  - coverage run room_allocator_test.py
   - codecov
